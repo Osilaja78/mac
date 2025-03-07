@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+  
+  /* School colors */
+  --primary-red: 227, 66, 52; /* #E34234 */
+  --primary-yellow: 255, 191, 0; /* #FFBF00 */
+  --primary-purple: 90, 79, 207; /* #5A4FCF */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 227 66 52;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 255 191 0;
+    --secondary-foreground: 0 0% 9%;
+    --accent: 90 79 207;
+    --accent-foreground: 0 0% 98%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 227 66 52;
+    --radius: 1rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 227 66 52;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 255 191 0;
+    --secondary-foreground: 0 0% 9%;
+    --accent: 90 79 207;
+    --accent-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 227 66 52;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-poppins font-bold;
+  }
+  p, span, a, li {
+    @apply font-inter font-light;
+  }
+}
+
+@layer components {
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+  
+  .nav-link {
+    @apply relative px-2 py-1 text-foreground transition-colors duration-300 hover:text-primary;
+  }
+  
+  .nav-link::after {
+    @apply content-[''] absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300;
+  }
+  
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+  
+  .btn-primary {
+    @apply bg-primary text-white px-6 py-2 rounded-full shadow-md transition-all duration-300 hover:shadow-lg hover:brightness-110 active:brightness-90;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary text-black px-6 py-2 rounded-full shadow-md transition-all duration-300 hover:shadow-lg hover:brightness-110 active:brightness-90;
+  }
+  
+  .btn-accent {
+    @apply bg-accent text-white px-6 py-2 rounded-full shadow-md transition-all duration-300 hover:shadow-lg hover:brightness-110 active:brightness-90;
+  }
+}
+
+/* Custom font variables */
+:root {
+  --font-inter: 'Inter', sans-serif;
+  --font-poppins: 'Poppins', sans-serif;
+}
+
+.font-inter {
+  font-family: var(--font-inter);
+}
+
+.font-poppins {
+  font-family: var(--font-poppins);
+}
