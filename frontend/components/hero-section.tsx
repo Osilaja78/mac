@@ -36,7 +36,7 @@ export function HeroSection() {
   }, [])
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-[#f9f7f4] px-[100px]">
+    <section className="relative min-h-screen w-full overflow-hidden bg-[#f9f7f4] px-[30px] md:px-[100px]">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-[500px] h-[500px] bg-primary/30 rounded-full blur-3xl -top-48 -right-48 animate-pulse"></div>

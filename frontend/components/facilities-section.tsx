@@ -56,7 +56,7 @@ export function FacilitiesSection() {
   const visibleFacilities = facilities.slice(currentIndex, currentIndex + 3)
   
   return (
-    <section className="py-20 bg-[#f9f7f4] relative overflow-hidden px-[100px]">
+    <section className="py-20 bg-[#f9f7f4] relative overflow-hidden px-[30px] md:px-[100px]">
       {/* Decorative elements */}
       <div className="absolute top-40 right-10 w-64 h-64 bg-primary/5 rounded-full"></div>
       <div className="absolute bottom-20 left-10 w-48 h-48 bg-secondary/5 rounded-full"></div>

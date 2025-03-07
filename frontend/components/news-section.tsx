@@ -33,7 +33,7 @@ const newsItems = [
 
 export function NewsSection() {
   return (
-    <section className="py-20 bg-white px-[100px]">
+    <section className="py-20 bg-white px-[30px] md:px-[100px]">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-12">
           <motion.div

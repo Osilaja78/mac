@@ -60,7 +60,7 @@ export function AcademicAchievements() {
           </p>
         </motion.div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 px-[100px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 px-[30px] md:px-[100px]">
           {stats.map((stat, index) => (
             <motion.div
               key={index}
