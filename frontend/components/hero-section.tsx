@@ -19,8 +19,13 @@ const stats = [
 ]
 
 export function HeroSection() {
-  const [currentImage, setCurrentImage] = useState(0)
-  const [isVisible, setIsVisible] = useState(false)
+  const [currentImage, setCurrentImage] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isBrowser, setIsBrowser] = useState(false);
+  
+  useEffect(() => {
+    setIsBrowser(typeof window !== 'undefined');
+  }, []);
 
   useEffect(() => {
     setIsVisible(true)
@@ -40,7 +45,8 @@ export function HeroSection() {
       </div>
 
       {/* Floating elements */}
-      <motion.div
+      {isBrowser && (
+        <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         className="absolute inset-0 pointer-events-none"
@@ -75,6 +81,7 @@ export function HeroSection() {
           </motion.div>
         ))}
       </motion.div>
+      )}
 
       <div className="container mx-auto px-4 pt-32 pb-20 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
