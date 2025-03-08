@@ -97,9 +97,10 @@ export function HeroSection() {
           <Image
             src={images[currentImage]}
             alt="background"
-            className="absolute inset-0 bg-cover bg-center"
+            style={{objectFit: "cover", objectPosition: "center", width: "100%", height: "100%"}}
+            className="absolute inset-0"
           />
-          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute inset-0 bg-white/10 backdrop-blur-[2px]" />
         </motion.div>
       </AnimatePresence>
 
