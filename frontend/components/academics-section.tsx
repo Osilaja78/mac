@@ -40,7 +40,7 @@ export function AcademicsSection() {
           </p>
         </motion.div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 px-[70px]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 px-[20px] md:px-[70px]">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}

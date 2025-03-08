@@ -1,14 +1,18 @@
 "use client"
 
-import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronRight, Sparkles, Star, ArrowRight } from 'lucide-react'
+import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronRight, Sparkles, Star, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
+import Building1 from '@/public/images/building1.jpg';
+import Lab3 from '@/public/images/lab3_c.jpg';
+import Lab5 from '@/public/images/lab5.jpg';
 
 const images = [
-  "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2022&q=80",
-  "https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-  "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+  Building1,
+  Lab3,
+  Lab5
 ]
 
 const stats = [
@@ -20,7 +24,6 @@ const stats = [
 
 export function HeroSection() {
   const [currentImage, setCurrentImage] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
   const [isBrowser, setIsBrowser] = useState(false);
   
   useEffect(() => {
@@ -28,7 +31,6 @@ export function HeroSection() {
   }, []);
 
   useEffect(() => {
-    setIsVisible(true)
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length)
     }, 5000)
@@ -45,7 +47,7 @@ export function HeroSection() {
       </div>
 
       {/* Floating elements */}
-      {isBrowser && (
+      {/* {isBrowser && (
         <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -81,7 +83,25 @@ export function HeroSection() {
           </motion.div>
         ))}
       </motion.div>
-      )}
+      )} */}
+      {/* Background Images */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentImage}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="absolute inset-0 z-0"
+        >
+          <Image
+            src={images[currentImage]}
+            alt="background"
+            className="absolute inset-0 bg-cover bg-center"
+          />
+          <div className="absolute inset-0 bg-black/30" />
+        </motion.div>
+      </AnimatePresence>
 
       <div className="container mx-auto px-4 pt-32 pb-20 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
@@ -180,36 +200,18 @@ export function HeroSection() {
             </motion.div>
           </motion.div>
 
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1 }}
             className="order-1 lg:order-2 relative"
           >
             <div className="relative rounded-2xl overflow-hidden shadow-2xl border-8 border-white transform hover:scale-105 transition-transform duration-500">
-              {/* <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentImage}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="absolute inset-0"
-                >
-                  <img
-                    src={images[currentImage]}
-                    alt="Mother&apos;s Aid"
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                </motion.div>
-              </AnimatePresence> */}
               <div className="aspect-w-4 aspect-h-3 md:aspect-w-16 md:aspect-h-9">
                 <div className="w-full h-full"></div>
               </div>
             </div>
 
-            {/* Decorative elements */}
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -222,12 +224,12 @@ export function HeroSection() {
               transition={{ duration: 0.5, delay: 1.4 }}
               className="absolute -top-6 -right-2 w-20 h-20 bg-accent rounded-full z-[-1]"
             />
-          </motion.div>
+          </motion.div> */}
         </div>
       </div>
 
       {/* Image Indicators */}
-      {/* <div className="absolute bottom-8 left-0 right-0 z-10 flex justify-center space-x-2">
+      <div className="absolute bottom-8 left-0 right-0 z-10 flex justify-center space-x-2">
         {images.map((_, index) => (
           <motion.button
             key={index}
@@ -240,7 +242,7 @@ export function HeroSection() {
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
-      </div> */}
+      </div>
     </section>
   )
 }
