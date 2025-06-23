@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Calendar, Phone } from 'lucide-react'
+import Link from 'next/link'
 
 export function CTASection() {
   return (
@@ -29,9 +30,11 @@ export function CTASection() {
                   Take the first step towards providing your child with an exceptional educational experience. Apply now or schedule a visit to learn more about our programs.
                 </p>
                 <div className="space-y-4">
-                  <Button size="lg" className="w-full bg-white text-primary hover:bg-white/90">
-                    Apply Now
-                  </Button>
+                  <Link href='https://forms.gle/ZxaMmcEPJYBVaGhu5' target="_blank" rel="noopener noreferrer">
+                    <Button size="lg" className="w-full bg-white text-primary hover:bg-white/90">
+                      Apply Now
+                    </Button>
+                  </Link>
                 </div>
               </motion.div>
             </div>
@@ -63,8 +66,8 @@ export function CTASection() {
                 <div className="mt-8 pt-8 border-t">
                   <h4 className="font-semibold mb-2">Admissions Office</h4>
                   <p className="text-gray-600">Monday - Friday: 8:00 AM - 4:00 PM</p>
-                  <p className="text-gray-600">Phone: (123) 456-7890</p>
-                  <p className="text-gray-600">Email: admissions@mothersaidschools.edu</p>
+                  <p className="text-gray-600">Phone: (234) 905-3113-178</p>
+                  <p className="text-gray-600">Email: mothersaidschools@gmail.com</p>
                 </div>
               </motion.div>
             </div>

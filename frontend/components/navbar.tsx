@@ -10,7 +10,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+import Image from 'next/image';
+import Logo from '@/public/images/logo-bg.jpeg';
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -36,8 +38,8 @@ export function Navbar() {
     )}>
       <div className="container mx-auto px-4 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
-          <BookOpen className="h-8 w-8 text-primary" />
-          <span className="font-poppins font-bold text-xl">Mother&apos;s Aid</span>
+          <Image className="h-8 w-8 text-primary" src={Logo} alt='logo' />
+          <span className="font-poppins font-bold text-xl">Mother&apos;s Aid Schools</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -60,8 +62,22 @@ export function Navbar() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger className="nav-link flex items-center font-medium">
+              Academics <ChevronDown className="ml-1 h-4 w-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>
+                <Link href="/academics" className="w-full">Our Curriculum</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href="/beyond-classroom" className="w-full">Beyond Classroom</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           
-          <Link href="/academics" className="nav-link font-medium">Academics</Link>
+          {/* <Link href="/academics" className="nav-link font-medium">Academics</Link> */}
           <Link href="/admissions" className="nav-link font-medium">Admissions</Link>
           <Link href="/news" className="nav-link font-medium">News & Events</Link>
           <Link href="/contact" className="nav-link font-medium">Contact</Link>

@@ -6,8 +6,8 @@ import { CTASection } from '@/components/cta-section'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Mission & Vision | Mother&apos;s Aid',
-  description: 'Discover our mission, vision, and core values that guide everything we do at Mother&apos;s Aid.',
+  title: 'Mission & Vision | Mother\'s Aid',
+  description: 'Discover our mission, vision, and core values that guide everything we do at Mother\'s Aid.',
 }
 
 export default function MissionPage() {

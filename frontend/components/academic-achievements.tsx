@@ -2,45 +2,58 @@
 
 import { motion } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Award, TrendingUp, BarChart, GraduationCap } from 'lucide-react'
+import Image from 'next/image'
 
 export function AcademicAchievements() {
-  const stats = [
+  const studentAchievements = [
     {
-      icon: <TrendingUp className="h-8 w-8 text-primary" />,
-      value: "97%",
-      label: "College Acceptance Rate",
-      description: "Our graduates are accepted to their top-choice colleges and universities."
+      image: "/images/results/result1.jpg",
+      name: "Oluwaseun Adebayo",
+      year: "2023",
+      grade: "8A1s, 1B2"
     },
     {
-      icon: <Award className="h-8 w-8 text-secondary" />,
-      value: "45+",
-      label: "Academic Competitions Won",
-      description: "Students excel in regional and national academic competitions annually."
+      image: "/images/results/result2.jpg",
+      name: "Chioma Okonkwo",
+      year: "2023",
+      grade: "7A1s, 2B2s"
     },
     {
-      icon: <BarChart className="h-8 w-8 text-accent" />,
-      value: "Top 5%",
-      label: "Standardized Test Scores",
-      description: "Our students consistently score in the top percentiles on standardized tests."
+      image: "/images/results/result3.jpg",
+      name: "Ahmed Ibrahim",
+      year: "2022",
+      grade: "9A1s"
     },
     {
-      icon: <GraduationCap className="h-8 w-8 text-primary" />,
-      value: "$3.2M",
-      label: "Scholarship Offers",
-      description: "Last year's graduating class received impressive scholarship offers."
+      image: "/images/results/result4.jpg",
+      name: "Folake Adenuga",
+      year: "2022",
+      grade: "8A1s, 1B2"
+    },
+    {
+      image: "/images/results/result1.jpg",
+      name: "Oluwaseun Adebayo",
+      year: "2023",
+      grade: "8A1s, 1B2"
+    },
+    {
+      image: "/images/results/result2.jpg",
+      name: "Chioma Okonkwo",
+      year: "2023",
+      grade: "7A1s, 2B2s"
+    },
+    {
+      image: "/images/results/result3.jpg",
+      name: "Ahmed Ibrahim",
+      year: "2022",
+      grade: "9A1s"
+    },
+    {
+      image: "/images/results/result4.jpg",
+      name: "Folake Adenuga",
+      year: "2022",
+      grade: "8A1s, 1B2"
     }
-  ]
-  
-  const achievements = [
-    "National Merit Scholarship Finalists",
-    "Presidential Scholars Program Recognition",
-    "Science Olympiad State Champions",
-    "Debate Team National Qualifiers",
-    "Math Competition Regional Winners",
-    "Model UN Outstanding Delegation Awards",
-    "Scholastic Art & Writing Awards",
-    "National History Day Competition Finalists"
   ]
   
   return (
@@ -53,15 +66,15 @@ export function AcademicAchievements() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl font-bold mb-4">Academic Excellence & Achievements</h2>
+          <h2 className="text-3xl font-bold mb-4">Outstanding WAEC Results</h2>
           <div className="w-24 h-1 bg-secondary mx-auto mb-6"></div>
           <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-            Our students consistently demonstrate exceptional academic performance and achievement in various fields.
+            Celebrating our students' exceptional performance in WAEC examinations.
           </p>
         </motion.div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 px-[30px] md:px-[100px]">
-          {stats.map((stat, index) => (
+          {studentAchievements.map((achievement, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
@@ -69,46 +82,28 @@ export function AcademicAchievements() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
             >
-              <Card className="h-full border-none shadow-md text-center">
-                <CardHeader className="pb-2">
-                  <div className="mx-auto w-16 h-16 bg-white rounded-full shadow-md flex items-center justify-center mb-4">
-                    {stat.icon}
+              <Card className="h-full border-none shadow-md hover:shadow-xl transition-shadow duration-300">
+                <CardHeader className="p-0">
+                  <div className="relative w-full h-[280px]">
+                    <Image
+                      src={achievement.image}
+                      alt={`${achievement.name}'s WAEC Result`}
+                      fill
+                      className="object-cover rounded-t-lg"
+                    />
+                    <div className="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">
+                      {achievement.grade}
+                    </div>
                   </div>
-                  <CardTitle className="text-4xl font-bold text-primary">{stat.value}</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <h3 className="text-lg font-semibold mb-2">{stat.label}</h3>
-                  <p className="text-gray-600">{stat.description}</p>
+                <CardContent className="text-center p-4">
+                  <h3 className="text-lg font-semibold text-gray-800">{achievement.name}</h3>
+                  <p className="text-gray-600">Class of {achievement.year}</p>
                 </CardContent>
               </Card>
             </motion.div>
           ))}
         </div>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="bg-white p-8 rounded-xl shadow-md"
-        >
-          <h3 className="text-2xl font-bold mb-6 text-center">Recent Student Achievements</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {achievements.map((achievement, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
-                viewport={{ once: true }}
-                className="bg-accent/5 p-4 rounded-lg flex items-center"
-              >
-                <Award className="h-5 w-5 text-accent mr-3 flex-shrink-0" />
-                <span className="text-gray-800">{achievement}</span>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   )

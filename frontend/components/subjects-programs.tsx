@@ -3,24 +3,24 @@
 import { motion } from 'framer-motion'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { BookOpen, Calculator, FlaskRound as Flask, Globe, Music, Palette, Code, Users } from 'lucide-react'
+import { BookOpen, Calculator, FlaskRound as Flask, Globe, Music, Palette, Code, Users, BookOpenCheck } from 'lucide-react'
 
 export function SubjectsPrograms() {
   const primarySubjects = [
     {
       icon: <BookOpen className="h-6 w-6 text-primary" />,
-      title: "Language Arts",
-      description: "Developing strong reading, writing, speaking, and listening skills through literature, grammar, and creative expression."
-    },
-    {
-      icon: <Calculator className="h-6 w-6 text-primary" />,
-      title: "Mathematics",
-      description: "Building number sense, problem-solving abilities, and mathematical reasoning through hands-on activities and conceptual understanding."
+      title: "Core Subjects",
+      description: "English Language, Mathematics, Basic Science, Basic Technology, Physical and Health Education, Information Technology"
     },
     {
       icon: <Flask className="h-6 w-6 text-primary" />,
-      title: "Science",
-      description: "Exploring the natural world through inquiry-based learning, experiments, and environmental studies."
+      title: "Social Sciences & Humanities",
+      description: "Social Studies, Yoruba, History"
+    },
+    {
+      icon: <Music className="h-6 w-6 text-primary" />,
+      title: "Creative Arts",
+      description: "Cultural and Creative Arts, Pre-vocational Studies."
     },
     {
       icon: <Globe className="h-6 w-6 text-primary" />,
@@ -28,47 +28,47 @@ export function SubjectsPrograms() {
       description: "Learning about history, geography, cultures, and civic responsibility through engaging projects and discussions."
     },
     {
-      icon: <Music className="h-6 w-6 text-primary" />,
-      title: "Arts & Music",
-      description: "Developing creativity and self-expression through visual arts, music, drama, and movement."
+      icon: <Users className="h-6 w-6 text-primary" />,
+      title: "Religious & Moral Education",
+      description: "Religion and National Values (C.R.S/I.R.S, Civic Education, Social Studies)."
     },
     {
-      icon: <Users className="h-6 w-6 text-primary" />,
-      title: "Physical Education",
-      description: "Promoting physical fitness, teamwork, and healthy habits through sports and movement activities."
-    }
+      icon: <BookOpenCheck className="h-6 w-6 text-primary" />,
+      title: "Others",
+      description: "Verbal Reasoning, Quantitative Reasoning, Handwriting."
+    },
   ]
   
   const secondarySubjects = [
     {
       icon: <BookOpen className="h-6 w-6 text-accent" />,
-      title: "English & Literature",
-      description: "Analyzing classic and contemporary literature, developing critical writing skills, and mastering effective communication."
+      title: "General Subjects",
+      description: "English Language, General Mathematics, Computer Studies, Marketing, Civic Education, Biology, Economics"
     },
     {
       icon: <Calculator className="h-6 w-6 text-accent" />,
-      title: "Advanced Mathematics",
-      description: "Progressing through algebra, geometry, trigonometry, pre-calculus, and calculus with real-world applications."
+      title: "Technical Subjects",
+      description: "Technical Drawing, Physics, Chemistry, Geography"
     },
     {
       icon: <Flask className="h-6 w-6 text-accent" />,
       title: "Sciences",
-      description: "Exploring biology, chemistry, physics, and environmental science through laboratory work and research projects."
+      description: "Chemistry, Further-Mathematics, Physics, Geography, Agric.Sci/Food & Nutrition"
     },
     {
       icon: <Globe className="h-6 w-6 text-accent" />,
-      title: "History & Social Sciences",
-      description: "Examining world and national history, government, economics, and contemporary global issues."
+      title: "Commercial Subjects",
+      description: "Commerce, Accounting, Yoruba, Agric. Sci/Food & Nutrition, Further Mathematics, Geography"
     },
-    {
-      icon: <Code className="h-6 w-6 text-accent" />,
-      title: "Technology & Computer Science",
-      description: "Developing digital literacy, programming skills, and understanding of emerging technologies."
-    },
+    // {
+    //   icon: <Code className="h-6 w-6 text-accent" />,
+    //   title: "Technology & Computer Science",
+    //   description: "Developing digital literacy, programming skills, and understanding of emerging technologies."
+    // },
     {
       icon: <Palette className="h-6 w-6 text-accent" />,
-      title: "Arts & Electives",
-      description: "Pursuing interests in visual arts, performing arts, journalism, psychology, and other specialized subjects."
+      title: "Arts",
+      description: "Literature, Yoruba, Visual Arts, C.R.S/I.R.S, Government, History"
     }
   ]
   

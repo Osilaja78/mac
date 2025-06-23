@@ -3,115 +3,231 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Music, Palette, Trophy, Globe, Code, Users } from 'lucide-react'
+import { Trophy, Users, Globe, Camera, Book, Leaf, Mic, PenTool } from 'lucide-react'
 
 export function BeyondClassroom() {
-  const activities = [
-    {
-      title: "Arts & Music",
-      description: "Express creativity through visual arts, choir, band, orchestra, and drama productions.",
-      icon: <Music className="h-6 w-6 text-white" />,
-      color: "bg-primary",
-      image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-    },
-    {
-      title: "Athletics",
-      description: "Develop teamwork and physical fitness through competitive and recreational sports.",
+  const sections = {
+    sports: {
+      title: "Sports and Indoor Games",
+      description: "We offer a wide range of sporting activities that help develop teamwork, discipline, and physical fitness. Our facilities include:",
+      items: [
+        "Football and Basketball Courts",
+        "Table Tennis Room",
+        "Chess and Board Games",
+        "Volleyball Court",
+        "Athletic Track"
+      ],
       icon: <Trophy className="h-6 w-6 text-white" />,
-      color: "bg-secondary",
-      image: "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80"
-    },
-    {
-      title: "STEM Clubs",
-      description: "Explore robotics, coding, engineering, and scientific research through hands-on projects.",
-      icon: <Code className="h-6 w-6 text-white" />,
-      color: "bg-accent",
-      image: "https://images.unsplash.com/photo-1581092921461-39b9d08a9b21?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-    },
-    {
-      title: "Community Service",
-      description: "Make a positive impact through volunteer work and service learning projects.",
-      icon: <Users className="h-6 w-6 text-white" />,
       color: "bg-primary",
-      image: "https://images.unsplash.com/photo-1560252829-804f1aedf1be?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+      image: "/images/sports.jpg"
     },
-    {
-      title: "Global Connections",
-      description: "Broaden perspectives through cultural exchanges, language clubs, and international trips.",
-      icon: <Globe className="h-6 w-6 text-white" />,
-      color: "bg-secondary",
-      image: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+    clubs: {
+      title: "Clubs and Societies",
+      description: "Our diverse clubs and societies help students develop leadership skills and explore their interests:",
+      activities: [
+        {
+          name: "Cultural/Drama Club",
+          description: "Exploring Nigerian culture through drama and performances",
+          icon: <Mic className="h-6 w-6 text-white" />,
+          image: "/images/clubs/drama.jpg"
+        },
+        {
+          name: "Filmmaking/Press Club",
+          description: "Creating digital content and school publications",
+          icon: <Camera className="h-6 w-6 text-white" />,
+          image: "/images/clubs/press.jpg"
+        },
+        {
+          name: "Farmers Club",
+          description: "Learning sustainable agriculture practices",
+          icon: <Leaf className="h-6 w-6 text-white" />,
+          image: "/images/clubs/farming.jpg"
+        },
+        {
+          name: "Literary & Debating Society",
+          description: "Developing public speaking and critical thinking skills",
+          icon: <Book className="h-6 w-6 text-white" />,
+          image: "/images/clubs/debate.jpg"
+        },
+        {
+          name: "Spelling Club",
+          description: "Enhancing vocabulary and language skills",
+          icon: <PenTool className="h-6 w-6 text-white" />,
+          image: "/images/clubs/spelling.jpg"
+        }
+      ],
+      color: "bg-secondary"
     },
-    {
-      title: "Leadership Development",
-      description: "Build leadership skills through student government, clubs, and mentorship programs.",
-      icon: <Users className="h-6 w-6 text-white" />,
-      color: "bg-accent",
-      image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+    trips: {
+      title: "Educational Trips",
+      description: "We organize educational excursions to broaden students' horizons:",
+      activities: [
+        {
+          name: "National Museum",
+          description: "Exploring Nigerian history and culture",
+          image: "/images/trips/museum.jpg",
+          date: "Term 1"
+        },
+        {
+          name: "Terra Kulture",
+          description: "Arts and cultural center visits",
+          image: "/images/trips/terra-kulture.jpg",
+          date: "Term 1"
+        },
+        {
+          name: "Lekki Conservation Centre",
+          description: "Environmental studies and nature exploration",
+          image: "/images/trips/lekki-conservation.jpg",
+          date: "Term 2"
+        },
+        {
+          name: "Science Museum",
+          description: "Interactive science learning experience",
+          image: "/images/trips/science-museum.jpg",
+          date: "Term 2"
+        }
+      ],
+      color: "bg-accent"
     }
-  ]
+  }
   
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
+        {/* Sports Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="mb-20"
         >
-          <h2 className="text-3xl font-bold mb-4">Beyond the Classroom</h2>
-          <div className="w-24 h-1 bg-secondary mx-auto mb-6"></div>
-          <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-            We believe that learning extends beyond traditional academics. Our extensive extracurricular 
-            programs provide opportunities for students to discover passions, develop talents, and build 
-            important life skills.
-          </p>
-        </motion.div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {activities.map((activity, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="group overflow-hidden rounded-xl shadow-lg relative"
-            >
-              <div className="relative h-64 overflow-hidden">
+          <div className="flex flex-col md:flex-row gap-8 items-center">
+            <div className="w-full md:w-1/2">
+              <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg">
                 <Image
-                  src={activity.image}
-                  alt={activity.title}
+                  src={sections.sports.image}
+                  alt={sections.sports.title}
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="object-cover"
                 />
-                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
-                
-                <div className="absolute top-4 left-4">
-                  <div className={`${activity.color} p-2 rounded-full`}>
-                    {activity.icon}
-                  </div>
-                </div>
-                
-                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <h3 className="text-xl font-bold mb-2">{activity.title}</h3>
-                  <p className="text-white/90 text-sm mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    {activity.description}
-                  </p>
+                <div className="absolute inset-0 bg-black/20"></div>
+                <div className={`absolute top-4 left-4 ${sections.sports.color} p-3 rounded-full`}>
+                  {sections.sports.icon}
                 </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
-        
-        <div className="text-center mt-12">
-          <Button className="bg-primary hover:bg-primary/90 text-white rounded-full group">
-            View All Activities
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </Button>
-        </div>
+            </div>
+
+            <div className="w-full md:w-1/2">
+              <div className={`h-1 w-16 ${sections.sports.color} mb-6`}></div>
+              <h2 className="text-3xl font-bold mb-4">{sections.sports.title}</h2>
+              <p className="text-gray-700 mb-6">{sections.sports.description}</p>
+              
+              <div className="space-y-3">
+                {sections.sports.items.map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    className="flex items-center gap-3"
+                  >
+                    <div className={`w-2 h-2 rounded-full ${sections.sports.color}`}></div>
+                    <span className="text-gray-700">{item}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Clubs Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="mb-20"
+        >
+          <h2 className="text-3xl font-bold mb-4 text-center">{sections.clubs.title}</h2>
+          <div className={`h-1 w-16 ${sections.clubs.color} mb-12 mx-auto`}></div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {sections.clubs.activities.map((club, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="group relative overflow-hidden rounded-xl shadow-lg"
+              >
+                <div className="relative h-[300px]">
+                  <Image
+                    src={club.image}
+                    alt={club.name}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors"></div>
+                  <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">
+                    <div className={`${sections.clubs.color} p-2 rounded-full w-fit mb-4`}>
+                      {club.icon}
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">{club.name}</h3>
+                    <p className="text-sm text-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      {club.description}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Educational Trips Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-3xl font-bold mb-4 text-center">{sections.trips.title}</h2>
+          <div className={`h-1 w-16 ${sections.trips.color} mb-12 mx-auto`}></div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {sections.trips.activities.map((trip, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="group relative rounded-xl overflow-hidden shadow-lg"
+              >
+                <div className="relative h-[400px]">
+                  <Image
+                    src={trip.image}
+                    alt={trip.name}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors"></div>
+                  <div className="absolute inset-0 p-8 flex flex-col justify-end text-white">
+                    <div className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm w-fit mb-4">
+                      {trip.date}
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2">{trip.name}</h3>
+                    <p className="text-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      {trip.description}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   )

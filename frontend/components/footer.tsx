@@ -11,10 +11,10 @@ export function Footer() {
           <div>
             <div className="flex items-center space-x-2 mb-6">
               <BookOpen className="h-8 w-8" />
-              <span className="font-poppins font-bold text-xl">Mother&apos;s Aid</span>
+              <span className="font-poppins font-bold text-xl">Mother&apos;s Aid Schools</span>
             </div>
             <p className="text-white/80 mb-6">
-              Providing exceptional education for primary and secondary students in a nurturing environment since 1995.
+              Providing exceptional education for pre-school, secondary and college students in a nurturing environment since 2009.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-white hover:text-secondary transition-colors" aria-label="Facebook">
@@ -61,15 +61,15 @@ export function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 mr-3 mt-0.5 flex-shrink-0" />
-                <span className="text-white/80">123 Education Lane, Learning City, LC 12345</span>
+                <span className="text-white/80">3, Leyioku Olubanjo Street, Down red block, Agbele, Ikorodu, Lagos State</span>
               </li>
               <li className="flex items-center">
                 <Phone className="h-5 w-5 mr-3 flex-shrink-0" />
-                <span className="text-white/80">(123) 456-7890</span>
+                <span className="text-white/80">(234) 905-3113-178</span>
               </li>
               <li className="flex items-center">
                 <Mail className="h-5 w-5 mr-3 flex-shrink-0" />
-                <span className="text-white/80">info@mothersaidschools.edu</span>
+                <span className="text-white/80">mothersaidschools@gmail.com</span>
               </li>
             </ul>
           </div>

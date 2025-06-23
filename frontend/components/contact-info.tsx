@@ -9,27 +9,25 @@ export function ContactInfo() {
       icon: <MapPin className="h-6 w-6 text-primary" />,
       title: "Address",
       details: [
-        "123 Education Lane",
-        "Learning City, LC 12345",
-        "United States"
+        "3, Leyioku Olubanjo Street, Down Red Block",
+        "Agbele, Ikorodu",
+        "Lagos State"
       ]
     },
     {
       icon: <Phone className="h-6 w-6 text-primary" />,
       title: "Phone",
       details: [
-        "Main Office: (123) 456-7890",
-        "Admissions: (123) 456-7891",
-        "Fax: (123) 456-7892"
+        "Main Office: (234) 905-3113-178",
+        "Admissions: (234) 905-0095-745",
+        "Enquiries: (234) 806-9905-720"
       ]
     },
     {
       icon: <Mail className="h-6 w-6 text-primary" />,
       title: "Email",
       details: [
-        "info@mothersaidschools.edu",
-        "admissions@mothersaidschools.edu",
-        "support@mothersaidschools.edu"
+        "mothersaidschools@gmail.com",
       ]
     },
     {

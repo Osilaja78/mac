@@ -16,10 +16,10 @@ const images = [
 ]
 
 const stats = [
-  { value: "28+", label: "Years of Excellence" },
-  { value: "850+", label: "Students Enrolled" },
-  { value: "45+", label: "Expert Faculty" },
-  { value: "100%", label: "Success Rate" }
+  { value: "17+", label: "Years of Excellence" },
+  // { value: "850+", label: "Students Enrolled" },
+  { value: "95%", label: "WAEC Success Rate" },
+  { value: "90%", label: "NECO Success Rate" },
 ]
 
 export function HeroSection() {
@@ -46,44 +46,6 @@ export function HeroSection() {
         <div className="absolute w-[300px] h-[300px] bg-accent/20 rounded-full blur-3xl top-1/2 left-1/4 animate-pulse delay-2000"></div>
       </div>
 
-      {/* Floating elements */}
-      {/* {isBrowser && (
-        <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="absolute inset-0 pointer-events-none"
-      >
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            initial={{
-              opacity: 0,
-              scale: 0,
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-            }}
-            animate={{
-              opacity: [0, 1, 0],
-              scale: [0, 1, 0],
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-            }}
-            transition={{
-              duration: Math.random() * 3 + 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
-            className="absolute"
-          >
-            {i % 2 === 0 ? (
-              <Sparkles className="text-primary/30 w-4 h-4" />
-            ) : (
-              <Star className="text-secondary/30 w-3 h-3" />
-            )}
-          </motion.div>
-        ))}
-      </motion.div>
-      )} */}
       {/* Background Images */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -118,7 +80,7 @@ export function HeroSection() {
               transition={{ duration: 0.8, delay: 0.5 }}
             >
               <div className="inline-block px-4 py-2 bg-primary/10 rounded-full text-primary font-medium mb-6">
-                Welcome to Mother&apos;s Aid
+                Welcome to Mother&apos;s Aid Schools
               </div>
             </motion.div>
 
@@ -128,9 +90,9 @@ export function HeroSection() {
               transition={{ duration: 0.8, delay: 0.7 }}
               className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
             >
-              Let's{" "}
+              Where academic{" "}
               <span className="relative">
-                <span className="relative z-10 text-primary">learn</span>
+                <span className="relative z-10 text-primary">excellence</span>
                 <motion.span
                   className="absolute bottom-0 left-0 w-full h-3 bg-secondary/30 -z-10"
                   initial={{ width: 0 }}
@@ -139,7 +101,7 @@ export function HeroSection() {
                 ></motion.span>
               </span>{" "}
               <br />
-              beyond the limits
+              begins.
             </motion.h1>
 
             <motion.p
@@ -148,7 +110,8 @@ export function HeroSection() {
               transition={{ duration: 0.8, delay: 0.9 }}
               className="text-xl text-gray-700 mb-10 max-w-lg"
             >
-              Providing exceptional education for primary and secondary students in a nurturing environment that fosters creativity, critical thinking, and personal growth.
+              Achieving intellectual and personal excellence.
+              {/* Providing exceptional education for primary and secondary students in a nurturing environment that fosters creativity, critical thinking, and personal growth. */}
             </motion.p>
 
             <motion.div

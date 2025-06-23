@@ -12,11 +12,11 @@ export function CurriculumOverview() {
       title: "Comprehensive Curriculum",
       description: "Our curriculum is designed to challenge students while fostering a love for learning."
     },
-    {
-      icon: <Users className="h-6 w-6 text-primary" />,
-      title: "Small Class Sizes",
-      description: "We maintain small class sizes to ensure personalized attention for every student."
-    },
+    // {
+    //   icon: <Users className="h-6 w-6 text-primary" />,
+    //   title: "Small Class Sizes",
+    //   description: "We maintain small class sizes to ensure personalized attention for every student."
+    // },
     {
       icon: <Award className="h-6 w-6 text-primary" />,
       title: "Qualified Faculty",

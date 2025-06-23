@@ -11,16 +11,16 @@ export function AcademicsSection() {
     { name: "Language Arts", icon: <BookOpen className="h-5 w-5" /> },
     { name: "Social Studies", icon: <BookOpen className="h-5 w-5" /> },
     { name: "Physical Education", icon: <BookOpen className="h-5 w-5" /> },
-    { name: "Foreign Languages", icon: <Globe className="h-5 w-5" /> },
+    { name: "Languages", icon: <Globe className="h-5 w-5" /> },
   ]
   
   const extracurricular = [
-    { name: "Music & Band", icon: <Music className="h-5 w-5" /> },
-    { name: "Visual Arts", icon: <Palette className="h-5 w-5" /> },
+    { name: "Cultural & Drama Club", icon: <Music className="h-5 w-5" /> },
+    { name: "Filmmaking/press club", icon: <Palette className="h-5 w-5" /> },
     { name: "Sports Teams", icon: <Trophy className="h-5 w-5" /> },
-    { name: "Coding Club", icon: <Code className="h-5 w-5" /> },
-    { name: "Debate Team", icon: <BookOpen className="h-5 w-5" /> },
-    { name: "Community Service", icon: <BookOpen className="h-5 w-5" /> },
+    { name: "Farmers Club", icon: <Code className="h-5 w-5" /> },
+    { name: "Literary & Debate Team", icon: <BookOpen className="h-5 w-5" /> },
+    { name: "Spelling Club", icon: <BookOpen className="h-5 w-5" /> },
   ]
   
   return (

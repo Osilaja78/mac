@@ -32,9 +32,7 @@ export function MissionVision() {
               <CardContent className="p-8">
                 <h2 className="text-2xl font-bold mb-4">Our Mission</h2>
                 <p className="text-gray-700 mb-6">
-                  To provide an exceptional education that challenges and inspires students to develop their full potential 
-                  intellectually, emotionally, and socially. We strive to create lifelong learners who will make positive 
-                  contributions to their communities and the world.
+                  Mother&apos;s Aid Schools, a caring and collaborative learning community, ensures that each stuent achieve intellectual and personal excellence and is well prepared for higher education and career pathway.
                 </p>
                 <ul className="space-y-3">
                   <li className="flex items-start">
@@ -76,9 +74,7 @@ export function MissionVision() {
               <CardContent className="p-8">
                 <h2 className="text-2xl font-bold mb-4">Our Vision</h2>
                 <p className="text-gray-700 mb-6">
-                  To be recognized as a leading educational institution that sets the standard for academic excellence, 
-                  innovation, and character development. We envision our graduates as confident, compassionate leaders 
-                  who are prepared to succeed in a rapidly changing world.
+                  Grooming leaders that demonstrate knowledge, skills, and flourish as a responsible citizen in the global community.
                 </p>
                 <ul className="space-y-3">
                   <li className="flex items-start">

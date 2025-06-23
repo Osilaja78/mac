@@ -19,19 +19,18 @@ export default function AcademicsPage() {
       <Navbar />
       <div className="pt-24 pb-12 bg-[#f9f7f4]">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">Academics</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">Beyond the Classroom</h1>
           <div className="w-24 h-1 bg-secondary mx-auto mb-8"></div>
           <p className="text-lg text-gray-700 text-center max-w-2xl mx-auto">
-            Our rigorous academic program is designed to challenge, inspire, and prepare students 
-            for success in college and beyond. We foster critical thinking, creativity, and a lifelong love of learning.
+            At Mother's Aid Schools, we have a variety of extra-curricular activities designed to help our 
+            students to broaden their creativity, critical thinking and interests. We believe that every one of 
+            our students should have passions that continue beyond their time with us. Our job is to help our 
+            students cultivate what captivates them by providing a varied range of exciting co-curricular activities.
           </p>
         </div>
       </div>
       
-      <CurriculumOverview />
-      <SubjectsPrograms />
-      <TeachingMethodology />
-      <AcademicAchievements />
+      <BeyondClassroom />
       <CTASection />
       
       <Footer />

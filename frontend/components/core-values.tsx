@@ -2,40 +2,40 @@
 
 import { motion } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Heart, Users, Star, Shield, Globe, BookOpen } from 'lucide-react'
+import { Heart, Clock, Star, Target } from 'lucide-react'
 
 export function CoreValues() {
   const values = [
     {
       icon: <Heart className="h-8 w-8 text-primary" />,
-      title: "Compassion",
-      description: "We foster empathy, kindness, and understanding in our community, encouraging students to care for others and make a positive impact."
+      title: "Empathy",
+      description: "We foster kindness, compassion, and understanding, encouraging students to connect with and care for others."
     },
     {
       icon: <Star className="h-8 w-8 text-secondary" />,
-      title: "Excellence",
-      description: "We strive for excellence in all endeavors, challenging ourselves and our students to reach their highest potential."
+      title: "Confidence",
+      description: "We empower students to believe in themselves, take initiative, and face challenges with courage and resilience."
+    },
+    // {
+    //   icon: <ShieldCheck className="h-8 w-8 text-accent" />,
+    //   title: "Integrity",
+    //   description: "We uphold honesty, fairness, and strong moral principles, encouraging students to do what’s right even when it’s difficult."
+    // },
+    {
+      icon: <Target className="h-8 w-8 text-primary" />,
+      title: "Self-Discipline",
+      description: "We encourage responsibility, focus, and perseverance in achieving personal and academic goals."
     },
     {
-      icon: <Shield className="h-8 w-8 text-accent" />,
-      title: "Integrity",
-      description: "We uphold the highest standards of honesty, ethics, and responsibility in all our actions and decisions."
-    },
-    {
-      icon: <Users className="h-8 w-8 text-primary" />,
-      title: "Community",
-      description: "We build strong relationships and create an inclusive environment where everyone feels valued and supported."
-    },
-    {
-      icon: <Globe className="h-8 w-8 text-secondary" />,
-      title: "Global Perspective",
-      description: "We embrace diversity and prepare students to be thoughtful citizens of an interconnected world."
-    },
-    {
-      icon: <BookOpen className="h-8 w-8 text-accent" />,
-      title: "Lifelong Learning",
-      description: "We inspire curiosity and a passion for continuous learning, growth, and discovery."
+      icon: <Clock className="h-8 w-8 text-secondary" />,
+      title: "Reliability",
+      description: "We promote consistency, accountability, and dependability in both our actions and commitments."
     }
+    // {
+    //   icon: <BookOpen className="h-8 w-8 text-accent" />,
+    //   title: "Lifelong Learning",
+    //   description: "We inspire curiosity and a passion for continuous learning, growth, and discovery."
+    // }
   ]
   
   return (

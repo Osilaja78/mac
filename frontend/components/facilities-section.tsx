@@ -4,17 +4,22 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import Lab from '@/public/images/laboratory.png'
+import Sports from '@/public/images/games.jpeg'
+import ArtStudio from '@/public/images/art-studio.png'
+import Classroom from '@/public/images/classroom.png'
+import Hall from '@/public/images/hall.png'
 
 const facilities = [
   {
     title: "Modern Classrooms",
     description: "Spacious, well-lit classrooms equipped with the latest educational technology.",
-    image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80"
+    image: Classroom
   },
   {
     title: "Science Laboratories",
     description: "State-of-the-art labs for physics, chemistry, and biology experiments.",
-    image: "https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80"
+    image: Lab
   },
   {
     title: "Library & Media Center",
@@ -24,17 +29,17 @@ const facilities = [
   {
     title: "Sports Facilities",
     description: "Indoor and outdoor facilities for various sports and physical activities.",
-    image: "https://images.unsplash.com/photo-1584466977773-e625c37cdd50?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80"
+    image: Sports
   },
   {
     title: "Arts Studio",
-    description: "Creative spaces for visual arts, music, drama, and other artistic pursuits.",
-    image: "https://images.unsplash.com/photo-1460518451285-97b6aa326961?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+    description: "Creative spaces for visual arts, drama, and other artistic pursuits.",
+    image: ArtStudio
   },
   {
-    title: "Playground",
-    description: "Safe and engaging outdoor play areas for younger students.",
-    image: "https://images.unsplash.com/photo-1566217688581-b2191944c2f9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+    title: "Examination Halls",
+    description: "A space designed for conducting examinations with proper seating and facilities.",
+    image: Hall
   }
 ]
 
@@ -72,7 +77,7 @@ export function FacilitiesSection() {
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Facilities</h2>
             <div className="w-20 h-1 bg-secondary mb-4"></div>
             <p className="text-lg text-gray-700 max-w-2xl">
-              Explore our modern campus designed to provide students with the best learning environment and resources.
+              Explore our modern structure designed to provide students with the best learning environment and resources.
             </p>
           </motion.div>
           

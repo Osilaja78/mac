@@ -3,13 +3,14 @@
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { CheckCircle2 } from 'lucide-react'
+import Link from 'next/link'
 
 export function AdmissionsSection() {
   const steps = [
     "Submit application form",
     "Provide academic records",
     "Schedule entrance assessment",
-    "Attend family interview",
+    // "Attend family interview",
     "Receive admission decision"
   ]
   
@@ -45,9 +46,11 @@ export function AdmissionsSection() {
                 ))}
               </ul>
               
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white rounded-full">
-                Apply Now
-              </Button>
+              <Link href='https://forms.gle/ZxaMmcEPJYBVaGhu5' target="_blank" rel="noopener noreferrer">
+                <Button size="lg" className="bg-primary hover:bg-primary/90 text-white rounded-full">
+                  Apply Now
+                </Button>
+              </Link>
             </motion.div>
             
             <motion.div
