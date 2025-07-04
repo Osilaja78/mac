@@ -18,7 +18,7 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-import os, imghdr
+import os, mimetypes
 
 
 # Password hashing setup
@@ -504,8 +504,12 @@ async def create_news(
     db: Session = Depends(get_db)
 ):
     # Validate image type
-    image_type = imghdr.what(cover_image.file)
-    if not image_type or image_type not in ['jpeg', 'png', 'gif']:
+    allowed_types = ['image/jpeg', 'image/png', 'image/gif']
+    file_extension = cover_image.filename.lower().split('.')[-1]
+    allowed_extensions = ['jpg', 'jpeg', 'png', 'gif']
+
+    if (cover_image.content_type not in allowed_types or 
+        file_extension not in allowed_extensions):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid image format. Please upload JPEG, PNG or GIF"
@@ -520,7 +524,7 @@ async def create_news(
             title=title,
             content=content,
             cover_image=image_content,
-            image_type=f"image/{image_type}",
+            image_type=cover_image.content_type,
             uploaded_by=current_admin.id
         )
         
@@ -612,15 +616,20 @@ async def update_news(
         
         # Update image if provided
         if cover_image:
-            image_type = imghdr.what(cover_image.file)
-            if not image_type or image_type not in ['jpeg', 'png', 'gif']:
+            allowed_types = ['image/jpeg', 'image/png', 'image/gif']
+            file_extension = cover_image.filename.lower().split('.')[-1]
+            allowed_extensions = ['jpg', 'jpeg', 'png', 'gif']
+            
+            if (cover_image.content_type not in allowed_types or 
+                file_extension not in allowed_extensions):
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail="Invalid image format. Please upload JPEG, PNG or GIF"
                 )
+
             image_content = await cover_image.read()
             news.cover_image = image_content
-            news.image_type = f"image/{image_type}"
+            news.image_type = cover_image.content_type
         
         db.commit()
         db.refresh(news)
