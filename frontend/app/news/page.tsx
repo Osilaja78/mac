@@ -19,6 +19,8 @@ import { Metadata } from 'next';
 //   description: 'Stay updated with the latest news and upcoming events at Mother\'s Aid.',
 // }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 interface NewsItem {
   id: string
   title: string
@@ -38,7 +40,7 @@ export default function NewsPage() {
 
   const fetchNews = async () => {
     try {
-      const response = await fetch('http://localhost:8000/admin/news')
+      const response = await fetch(`${API_URL}/admin/news`)
       if (!response.ok) {
         throw new Error('Failed to fetch news')
       }
@@ -95,7 +97,7 @@ export default function NewsPage() {
                   <div className="aspect-video relative">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={`http://localhost:8000${news.image_url}`}
+                      src={`${API_URL}${news.image_url}`}
                       alt={news.title}
                       className="w-full h-full object-cover"
                     />
@@ -135,7 +137,7 @@ export default function NewsPage() {
                 <div className="aspect-video relative rounded-lg overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={`http://localhost:8000${selectedNews.image_url}`}
+                    src={`${API_URL}${selectedNews.image_url}`}
                     alt={selectedNews.title}
                     className="w-full h-full object-cover"
                   />

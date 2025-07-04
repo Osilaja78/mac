@@ -17,6 +17,7 @@ import {
 import { X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 interface SubjectScore {
   subject_name: string
   ca_score: number
@@ -81,7 +82,7 @@ export function ReportCardForm({ onClose }: ReportCardFormProps) {
     }
 
     try {
-      const response = await fetch('http://localhost:8000/admin/report-cards', {
+      const response = await fetch(`${API_URL}/admin/report-cards`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

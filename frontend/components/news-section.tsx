@@ -15,6 +15,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 interface NewsItem {
   id: string
   title: string
@@ -36,7 +38,7 @@ export function NewsSection() {
 
   const fetchNews = async () => {
     try {
-      const response = await fetch('http://localhost:8000/admin/news')
+      const response = await fetch(`${API_URL}/admin/news`)
       if (!response.ok) {
         throw new Error('Failed to fetch news')
       }
@@ -112,7 +114,7 @@ export function NewsSection() {
                 <Card className="h-full overflow-hidden card-hover border-none shadow-md">
                   <div className="relative h-48 overflow-hidden">
                     <Image
-                      src={`http://localhost:8000${item.image_url}`}
+                      src={`${API_URL}${item.image_url}`}
                       alt={item.title}
                       fill
                       className="object-cover transition-transform duration-500 hover:scale-105"
@@ -164,7 +166,7 @@ export function NewsSection() {
                 <div className="space-y-4">
                   <div className="aspect-video relative rounded-lg overflow-hidden">
                     <Image
-                      src={`http://localhost:8000${selectedNews.image_url}`}
+                      src={`${API_URL}${selectedNews.image_url}`}
                       alt={selectedNews.title}
                       fill
                       className="object-cover"
