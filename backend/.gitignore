@@ -1,0 +1,6 @@
+__pycache__
+alembic
+*.ini
+*.db
+.env
+env
