@@ -7,51 +7,51 @@ import Image from 'next/image'
 export function AcademicAchievements() {
   const studentAchievements = [
     {
-      image: "/images/results/result1.jpg",
-      name: "Oluwaseun Adebayo",
+      image: "/images/results/20250623_152633.jpg",
+      name: "Adeyi Marvellous",
       year: "2023",
       grade: "8A1s, 1B2"
     },
     {
-      image: "/images/results/result2.jpg",
-      name: "Chioma Okonkwo",
+      image: "/images/results/20250623_152744.jpg",
+      name: "Akilo Yemisi",
       year: "2023",
       grade: "7A1s, 2B2s"
     },
     {
-      image: "/images/results/result3.jpg",
-      name: "Ahmed Ibrahim",
-      year: "2022",
+      image: "/images/results/20250623_155249.jpg",
+      name: "Alimi Titilayo",
+      year: "2024",
       grade: "9A1s"
     },
     {
-      image: "/images/results/result4.jpg",
-      name: "Folake Adenuga",
-      year: "2022",
+      image: "/images/results/20250623_155349.jpg",
+      name: "Shokunbi Kehinde",
+      year: "2024",
       grade: "8A1s, 1B2"
     },
     {
-      image: "/images/results/result1.jpg",
-      name: "Oluwaseun Adebayo",
+      image: "/images/results/20250623_150551.jpg",
+      name: "Ashamu Mariam",
       year: "2023",
       grade: "8A1s, 1B2"
     },
     {
-      image: "/images/results/result2.jpg",
-      name: "Chioma Okonkwo",
+      image: "/images/results/20250623_150735.jpg",
+      name: "Ayelabowo Oyindamola",
       year: "2023",
       grade: "7A1s, 2B2s"
     },
     {
-      image: "/images/results/result3.jpg",
-      name: "Ahmed Ibrahim",
-      year: "2022",
+      image: "/images/results/20250623_150853.jpg",
+      name: "Ogunbolu Folashade",
+      year: "2023",
       grade: "9A1s"
     },
     {
-      image: "/images/results/result4.jpg",
-      name: "Folake Adenuga",
-      year: "2022",
+      image: "/images/results/20250623_151022.jpg",
+      name: "Nnamani David",
+      year: "2023",
       grade: "8A1s, 1B2"
     }
   ]
@@ -66,10 +66,10 @@ export function AcademicAchievements() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl font-bold mb-4">Outstanding WAEC Results</h2>
+          <h2 className="text-3xl font-bold mb-4">Outstanding WAEC/NECO Results</h2>
           <div className="w-24 h-1 bg-secondary mx-auto mb-6"></div>
           <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-            Celebrating our students' exceptional performance in WAEC examinations.
+            Celebrating our students' exceptional performance in WAEC/NECO examinations.
           </p>
         </motion.div>
         
@@ -84,16 +84,16 @@ export function AcademicAchievements() {
             >
               <Card className="h-full border-none shadow-md hover:shadow-xl transition-shadow duration-300">
                 <CardHeader className="p-0">
-                  <div className="relative w-full h-[280px]">
+                  <div className="relative w-full h-[300px]">
                     <Image
                       src={achievement.image}
                       alt={`${achievement.name}'s WAEC Result`}
                       fill
                       className="object-cover rounded-t-lg"
                     />
-                    <div className="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    {/* <div className="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">
                       {achievement.grade}
-                    </div>
+                    </div> */}
                   </div>
                 </CardHeader>
                 <CardContent className="text-center p-4">

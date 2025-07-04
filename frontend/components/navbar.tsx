@@ -72,7 +72,7 @@ export function Navbar() {
                 <Link href="/academics" className="w-full">Our Curriculum</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link href="/beyond-classroom" className="w-full">Beyond Classroom</Link>
+                <Link href="/beyond-classroom" className="w-full">Beyond Academics</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -86,7 +86,7 @@ export function Navbar() {
         <div className="hidden md:block">
           <Link href="/portal/login">
             <Button variant="outline" className="rounded-full border-primary text-primary hover:bg-primary/10 hover:text-primary">
-            Portal Login
+              Student Login
             </Button>
           </Link>
         </div>
@@ -143,13 +143,27 @@ export function Navbar() {
                 </div>
               </details>
             </div>
-            <Link 
-              href="/academics" 
-              className="py-2 px-4 hover:bg-muted rounded-md"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Academics
-            </Link>
+            <div className="py-2 px-4 hover:bg-muted rounded-md">
+              <details>
+                <summary className="cursor-pointer">Academics</summary>
+                <div className="ml-4 mt-2 flex flex-col space-y-2">
+                  <Link 
+                    href="/academics" 
+                    className="py-1"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Our Curriculum
+                  </Link>
+                  <Link 
+                    href="/beyond-classroom" 
+                    className="py-1"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Beyond Academics
+                  </Link>
+                </div>
+              </details>
+            </div>
             <Link 
               href="/admissions" 
               className="py-2 px-4 hover:bg-muted rounded-md"
@@ -173,7 +187,7 @@ export function Navbar() {
             </Link>
             <div className="pt-2">
               <Button variant="outline" className="w-full rounded-full border-primary text-primary hover:bg-primary/10">
-                Portal Login
+                Student Login
               </Button>
             </div>
           </div>

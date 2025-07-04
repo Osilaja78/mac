@@ -7,7 +7,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react'
 export function AdmissionsFAQ() {
   const faqs = [
     {
-      question: "What is the student-to-teacher ratio at Mother&apos;s Aid?",
+      question: "What is the student-to-teacher ratio at Mother\'s Aid?",
       answer: "We maintain a low student-to-teacher ratio of 15:1 in primary school and 18:1 in secondary school. This allows our teachers to provide personalized attention to each student and create a more engaging learning environment."
     },
     {

@@ -9,17 +9,18 @@ export function BeyondClassroom() {
   const sections = {
     sports: {
       title: "Sports and Indoor Games",
-      description: "We offer a wide range of sporting activities that help develop teamwork, discipline, and physical fitness. Our facilities include:",
+      description: "We offer a wide range of sporting activities that help develop teamwork, discipline, and physical fitness. Our extra-curricular activities include:",
       items: [
-        "Football and Basketball Courts",
-        "Table Tennis Room",
+        "Football",
+        "Taekwando",
+        "Table Tennis",
         "Chess and Board Games",
-        "Volleyball Court",
+        "Volleyball",
         "Athletic Track"
       ],
       icon: <Trophy className="h-6 w-6 text-white" />,
       color: "bg-primary",
-      image: "/images/sports.jpg"
+      image: "/images/taekwando.jpeg"
     },
     clubs: {
       title: "Clubs and Societies",
@@ -29,7 +30,7 @@ export function BeyondClassroom() {
           name: "Cultural/Drama Club",
           description: "Exploring Nigerian culture through drama and performances",
           icon: <Mic className="h-6 w-6 text-white" />,
-          image: "/images/clubs/drama.jpg"
+          image: "/images/clubs/drama-club.jpg"
         },
         {
           name: "Filmmaking/Press Club",
@@ -65,7 +66,7 @@ export function BeyondClassroom() {
         {
           name: "National Museum",
           description: "Exploring Nigerian history and culture",
-          image: "/images/trips/museum.jpg",
+          image: "/images/trips/art-trip.jpg",
           date: "Term 1"
         },
         {

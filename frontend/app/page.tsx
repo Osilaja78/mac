@@ -1,16 +1,61 @@
-import { Navbar } from '@/components/navbar'
-import { HeroSection } from '@/components/hero-section'
-import { AboutSection } from '@/components/about-section'
-import { FacilitiesSection } from '@/components/facilities-section'
-import { AcademicsSection } from '@/components/academics-section'
-import { AdmissionsSection } from '@/components/admissions-section'
-import { NewsSection } from '@/components/news-section'
-import { CTASection } from '@/components/cta-section'
-import { Footer } from '@/components/footer'
+"use client"
+
+import { useState, useEffect } from 'react';
+import {
+  Dialog,
+  DialogContent,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
+import { Navbar } from '@/components/navbar';
+import { HeroSection } from '@/components/hero-section';
+import { AboutSection } from '@/components/about-section';
+import { FacilitiesSection } from '@/components/facilities-section';
+import { AcademicsSection } from '@/components/academics-section';
+import { AdmissionsSection } from '@/components/admissions-section';
+import { NewsSection } from '@/components/news-section';
+import { CTASection } from '@/components/cta-section';
+import { Footer } from '@/components/footer';
 
 export default function Home() {
+  const [showPopup, setShowPopup] = useState(false)
+
+  useEffect(() => {
+    // Show popup after a small delay for better UX
+    const timer = setTimeout(() => {
+      setShowPopup(true)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
     <main className="min-h-screen overflow-x-hidden">
+      <Dialog open={showPopup} onOpenChange={setShowPopup}>
+        <DialogContent className="max-w-[400px] max-h-[90vh] p-0 overflow-scroll">
+          <div className="w-full">
+            <Image
+              src="/images/entrance-banner.jpg"
+              alt="Entrance Banner"
+              width={1000}
+              height={400}
+              className="w-full h-auto"
+              priority
+            />
+          </div>
+          <div className="p-6 text-center bg-white">
+            <Link href="https://docs.google.com/forms/d/e/1FAIpQLSfw80mlXUDKVfwBwy5-bqeHm9hoKyN5JZ2cX6g3oa8Dn7ahaQ/viewform?usp=dialog" target='_blank'>
+              <Button className="bg-primary hover:bg-primary/90">
+                Register Now
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <Navbar />
       <HeroSection />
       <AboutSection />

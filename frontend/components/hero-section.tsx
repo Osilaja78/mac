@@ -61,6 +61,7 @@ export function HeroSection() {
             alt="background"
             style={{objectFit: "cover", objectPosition: "center", width: "100%", height: "100%"}}
             className="absolute inset-0"
+            priority
           />
           <div className="absolute inset-0 bg-white/10 backdrop-blur-[2px]" />
         </motion.div>

@@ -1,37 +1,67 @@
 "use client"
 
-import { motion } from 'framer-motion'
-import Image from 'next/image'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Calendar, ArrowRight } from 'lucide-react'
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Calendar, ArrowRight, Loader2 } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
-const newsItems = [
-  {
-    title: "Annual Science Fair Winners Announced",
-    date: "May 15, 2025",
-    excerpt: "Congratulations to all participants in this year's Science Fair. The creativity and innovation displayed were truly impressive.",
-    image: "https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-    link: "/news/science-fair-winners"
-  },
-  {
-    title: "New Arts Center Opening Next Month",
-    date: "April 28, 2025",
-    excerpt: "We're excited to announce the opening of our new state-of-the-art Arts Center, which will enhance our visual and performing arts programs.",
-    image: "https://images.unsplash.com/photo-1460518451285-97b6aa326961?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-    link: "/news/arts-center-opening"
-  },
-  {
-    title: "Basketball Team Advances to Finals",
-    date: "April 10, 2025",
-    excerpt: "Our secondary school basketball team has advanced to the regional finals after an impressive victory in the semifinals.",
-    image: "https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2090&q=80",
-    link: "/news/basketball-finals"
-  }
-]
+interface NewsItem {
+  id: string
+  title: string
+  content: string
+  date_uploaded: string
+  image_url: string
+}
 
 export function NewsSection() {
+  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedNews, setSelectedNews] = useState<NewsItem | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    fetchNews()
+  }, [])
+
+  const fetchNews = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/admin/news')
+      if (!response.ok) {
+        throw new Error('Failed to fetch news')
+      }
+      const data = await response.json()
+      setNewsItems(data)
+    } catch (error) {
+      setError('Failed to load news')
+      console.error('Error fetching news:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+  }
+
+  const handleViewAllClick = () => {
+    router.push('/news');
+  }
+
   return (
     <section className="py-20 bg-white px-[30px] md:px-[100px]">
       <div className="container mx-auto px-4">
@@ -54,7 +84,7 @@ export function NewsSection() {
             viewport={{ once: true }}
             className="hidden md:block"
           >
-            <Button variant="outline" className="group border-primary text-primary hover:bg-primary/10">
+            <Button variant="outline" onClick={handleViewAllClick} className="group border-primary text-primary hover:bg-primary/10">
               View All News
               <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Button>
@@ -62,52 +92,97 @@ export function NewsSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {newsItems.map((item, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <Card className="h-full overflow-hidden card-hover border-none shadow-md">
-                <div className="relative h-48 overflow-hidden">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover transition-transform duration-500 hover:scale-105"
-                  />
-                </div>
-                <CardHeader>
-                  <div className="flex items-center text-gray-500 mb-2">
-                    <Calendar className="h-4 w-4 mr-2" />
-                    <span className="text-sm">{item.date}</span>
+        {isLoading ? (
+            <div className="col-span-3 flex justify-center py-20">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : error ? (
+            <div className="col-span-3 text-center py-20 text-gray-500">{error}</div>
+          ) : newsItems.length === 0 ? (
+            <div className="col-span-3 text-center py-20 text-gray-500">No news available</div>
+          ) : (
+            newsItems.slice(0, 3).map((item, index) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <Card className="h-full overflow-hidden card-hover border-none shadow-md">
+                  <div className="relative h-48 overflow-hidden">
+                    <Image
+                      src={`http://localhost:8000${item.image_url}`}
+                      alt={item.title}
+                      fill
+                      className="object-cover transition-transform duration-500 hover:scale-105"
+                    />
                   </div>
-                  <CardTitle className="text-xl">{item.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-gray-700 text-base">
-                    {item.excerpt}
-                  </CardDescription>
-                </CardContent>
-                <CardFooter>
-                  <Link href={item.link} className="text-primary font-medium hover:underline inline-flex items-center group">
-                    Read More
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                  </Link>
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))}
+                  <CardHeader>
+                    <div className="flex items-center text-gray-500 mb-2">
+                      <Calendar className="h-4 w-4 mr-2" />
+                      <span className="text-sm">{formatDate(item.date_uploaded)}</span>
+                    </div>
+                    <CardTitle className="text-xl">{item.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-gray-700 text-base line-clamp-3">
+                      {item.content}
+                    </CardDescription>
+                  </CardContent>
+                  <CardFooter>
+                    <button
+                      onClick={() => setSelectedNews(item)}
+                      className="text-primary font-medium hover:underline inline-flex items-center group"
+                    >
+                      Read More
+                      <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </button>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+            ))
+          )}
         </div>
         
         <div className="mt-8 text-center md:hidden">
-          <Button variant="outline" className="border-primary text-primary hover:bg-primary/10">
+          <Button variant="outline" onClick={handleViewAllClick} className="border-primary text-primary hover:bg-primary/10">
             View All News
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
+
+        <Dialog open={!!selectedNews} onOpenChange={() => setSelectedNews(null)}>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            {selectedNews && (
+              <>
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-bold pb-4">
+                    {selectedNews.title}
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div className="aspect-video relative rounded-lg overflow-hidden">
+                    <Image
+                      src={`http://localhost:8000${selectedNews.image_url}`}
+                      alt={selectedNews.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <p className="text-sm text-gray-500">
+                    {formatDate(selectedNews.date_uploaded)}
+                  </p>
+                  <div className="prose max-w-none pb-4">
+                    <p className="text-gray-600 whitespace-pre-wrap">
+                      {selectedNews.content}
+                    </p>
+                  </div>
+                </div>
+              </>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </section>
   )

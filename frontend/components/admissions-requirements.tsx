@@ -18,39 +18,40 @@ export function AdmissionsRequirements() {
         "Recent photograph"
       ]
     },
-    {
-      title: "Key Dates",
-      icon: <Calendar className="h-8 w-8 text-secondary" />,
-      items: [
-        "Application Deadline: March 15, 2026",
-        "Assessment Period: April 1-15, 2026",
-        "Family Interviews: April 15-30, 2026",
-        "Decision Notifications: May 1, 2026",
-        "Enrollment Confirmation: May 15, 2026",
-        "New Student Orientation: August 20, 2026"
-      ]
-    },
-    {
-      title: "Tuition & Fees",
-      icon: <DollarSign className="h-8 w-8 text-accent" />,
-      items: [
-        "Application Fee: $100 (non-refundable)",
-        "KG, Nursery: $18,500/year",
-        "Primary School: $20,500/year",
-        "Secondary School (9-12): $22,500/year",
-        "Activity Fee: $750/year"
-      ]
-    },
+    // {
+    //   title: "Key Dates",
+    //   icon: <Calendar className="h-8 w-8 text-secondary" />,
+    //   items: [
+    //     "Application Deadline: March 15, 2026",
+    //     "Assessment Period: April 1-15, 2026",
+    //     "Family Interviews: April 15-30, 2026",
+    //     "Decision Notifications: May 1, 2026",
+    //     "Enrollment Confirmation: May 15, 2026",
+    //     "New Student Orientation: August 20, 2026"
+    //   ]
+    // },
+    // {
+    //   title: "Tuition & Fees",
+    //   icon: <DollarSign className="h-8 w-8 text-accent" />,
+    //   items: [
+    //     "Application Fee: $100 (non-refundable)",
+    //     "KG, Nursery: $18,500/year",
+    //     "Primary School: $20,500/year",
+    //     "Secondary School (9-12): $22,500/year",
+    //     "Activity Fee: $750/year"
+    //   ]
+    // },
     {
       title: "Grade Level Requirements",
       icon: <GraduationCap className="h-8 w-8 text-primary" />,
       items: [
-        "Kindergarten: 5 years old by September 1",
-        "Primary School: Age-appropriate readiness",
-        "Middle School: Strong academic foundation",
-        "High School: Successful completion of middle school",
-        "Transfer Students: Good academic standing",
-        "International Students: English proficiency"
+        "Creche: 5 months - 2 years",
+        "Nursery: 2 - 4 years",
+        "Kindergarten: 3 - 5 years",
+        "Pre-Primary: 4 - 6 years",
+        "Primary School: 5 - 11 years",
+        "Junior Secondary School: 10 - 15 years",
+        "Senior Secondary School: 13 - 18 years",
       ]
     }
   ]

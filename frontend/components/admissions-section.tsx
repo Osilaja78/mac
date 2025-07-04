@@ -68,23 +68,23 @@ export function AdmissionsSection() {
               <h3 className="text-2xl font-bold mb-6">Key Dates</h3>
               <div className="space-y-6">
                 <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
-                  <h4 className="font-semibold text-lg">Application Deadline</h4>
-                  <p className="text-white/90">March 15, 2026</p>
+                  <h4 className="font-semibold text-lg">Third Term Examination</h4>
+                  <p className="text-white/90">10th-16th July, 2025</p>
                 </div>
                 
                 <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
-                  <h4 className="font-semibold text-lg">Assessment Period</h4>
-                  <p className="text-white/90">April 1-15, 2026</p>
+                  <h4 className="font-semibold text-lg">End of Session Party</h4>
+                  <p className="text-white/90">31st july, 2025</p>
                 </div>
                 
                 <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
-                  <h4 className="font-semibold text-lg">Decision Notifications</h4>
-                  <p className="text-white/90">May 1, 2026</p>
+                  <h4 className="font-semibold text-lg">Entrance Exam (First Batch)</h4>
+                  <p className="text-white/90">August 2nd, 2025</p>
                 </div>
                 
                 <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
-                  <h4 className="font-semibold text-lg">Enrollment Confirmation</h4>
-                  <p className="text-white/90">May 15, 2026</p>
+                  <h4 className="font-semibold text-lg">Holiday Coaching</h4>
+                  <p className="text-white/90">4th-28th August</p>
                 </div>
               </div>
             </motion.div>

@@ -17,16 +17,16 @@ export function Footer() {
               Providing exceptional education for pre-school, secondary and college students in a nurturing environment since 2009.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-white hover:text-secondary transition-colors" aria-label="Facebook">
+              <a href="https://www.facebook.com/share/1ETdcHykhC/" target='_blank' className="text-white hover:text-secondary transition-colors" aria-label="Facebook">
                 <Facebook className="h-5 w-5" />
               </a>
-              <a href="#" className="text-white hover:text-secondary transition-colors" aria-label="Twitter">
+              {/* <a href="#" className="text-white hover:text-secondary transition-colors" aria-label="Twitter">
                 <Twitter className="h-5 w-5" />
               </a>
               <a href="#" className="text-white hover:text-secondary transition-colors" aria-label="Instagram">
                 <Instagram className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-white hover:text-secondary transition-colors" aria-label="YouTube">
+              </a> */}
+              <a href="https://www.youtube.com/@Mothersaidschools" target='_blank' className="text-white hover:text-secondary transition-colors" aria-label="YouTube">
                 <Youtube className="h-5 w-5" />
               </a>
             </div>
