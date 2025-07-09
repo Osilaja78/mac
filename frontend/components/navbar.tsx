@@ -186,9 +186,11 @@ export function Navbar() {
               Contact
             </Link>
             <div className="pt-2">
-              <Button variant="outline" className="w-full rounded-full border-primary text-primary hover:bg-primary/10">
-                Student Login
-              </Button>
+              <Link href="/portal/login">
+                <Button variant="outline" className="w-full rounded-full border-primary text-primary hover:bg-primary/10">
+                  Student Login
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

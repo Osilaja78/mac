@@ -24,7 +24,7 @@ const navigation = [
   { name: 'Dashboard', href: '/portal/dashboard', icon: Layout },
   { name: 'Academic Report', href: '/portal/dashboard/academic-reports', icon: GraduationCap },
   { name: 'Reading Materials', href: '/portal/dashboard/materials', icon: Book },
-  { name: 'Settings', href: '/portal/dashboard/settings', icon: Settings },
+  // { name: 'Settings', href: '/portal/dashboard/settings', icon: Settings },
 ]
 
 export default function DashboardLayout({
