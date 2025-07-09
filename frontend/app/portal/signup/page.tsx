@@ -21,9 +21,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function SignupPage() {
-  const router = useRouter()
-  const { toast } = useToast()
-  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter();
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   
   const [formData, setFormData] = useState({
     full_name: '',
@@ -37,34 +37,34 @@ export default function SignupPage() {
     confirmPassword: '',
     state_of_origin: '',
     local_government: '',
-  })
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.id]: e.target.value
-    })
+    });
   }
 
   const handleSelectChange = (name: string, value: string) => {
     setFormData({
       ...formData,
       [name]: value
-    })
+    });
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
 
     if (formData.password !== formData.confirmPassword) {
       toast({
         title: "Password mismatch",
         description: "Passwords do not match. Please try again.",
         variant: "destructive",
-      })
-      setIsLoading(false)
-      return
+      });
+      setIsLoading(false);
+      return;
     }
 
     try {
@@ -85,20 +85,22 @@ export default function SignupPage() {
           state_of_origin: formData.state_of_origin,
           local_government: formData.local_government,
         }),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.detail || 'Registration failed')
+        throw new Error(data.detail || 'Registration failed');
       }
 
       toast({
         title: "Registration successful",
-        description: `Your admission number is ${data.admission_number}. Please save it for login.`,
-      })
+        description: `Your admission number is ${data.admission_number}. Please save it for login.\nIt has also been sent to your email address.`,
+      });
 
-      router.push('/portal/login')
+      setTimeout(() => {
+        router.push('/portal/login')
+      }, 4000);
     } catch (error) {
       toast({
         title: "Registration failed",
@@ -220,7 +222,40 @@ export default function SignupPage() {
                         <SelectItem value="abia">Abia</SelectItem>
                         <SelectItem value="adamawa">Adamawa</SelectItem>
                         <SelectItem value="akwa_ibom">Akwa Ibom</SelectItem>
-                        {/* Add all Nigerian states */}
+                        <SelectItem value="anambra">Anambra</SelectItem>
+                        <SelectItem value="bauchi">Bauchi</SelectItem>
+                        <SelectItem value="bayelsa">Bayelsa</SelectItem>
+                        <SelectItem value="benue">Benue</SelectItem>
+                        <SelectItem value="borno">Borno</SelectItem>
+                        <SelectItem value="cross_river">Cross River</SelectItem>
+                        <SelectItem value="delta">Delta</SelectItem>
+                        <SelectItem value="ebonyi">Ebonyi</SelectItem>
+                        <SelectItem value="edo">Edo</SelectItem>
+                        <SelectItem value="ekiti">Ekiti</SelectItem>
+                        <SelectItem value="enugu">Enugu</SelectItem>
+                        <SelectItem value="gombe">Gombe</SelectItem>
+                        <SelectItem value="imo">Imo</SelectItem>
+                        <SelectItem value="jigawa">Jigawa</SelectItem>
+                        <SelectItem value="kaduna">Kaduan</SelectItem>
+                        <SelectItem value="kastina">Kastina</SelectItem>
+                        <SelectItem value="kano">Kano</SelectItem>
+                        <SelectItem value="kebbi">Kebbi</SelectItem>
+                        <SelectItem value="kogi">Kogi</SelectItem>
+                        <SelectItem value="kwara">Kwara</SelectItem>
+                        <SelectItem value="lagos">Lagos</SelectItem>
+                        <SelectItem value="nassarawa">Nassarawa</SelectItem>
+                        <SelectItem value="niger">Niger</SelectItem>
+                        <SelectItem value="ogun">Ogun</SelectItem>
+                        <SelectItem value="ondo">Ondo</SelectItem>
+                        <SelectItem value="osun">Osun</SelectItem>
+                        <SelectItem value="oyo">Oyo</SelectItem>
+                        <SelectItem value="plateau">Plateau</SelectItem>
+                        <SelectItem value="rivers">Rivers</SelectItem>
+                        <SelectItem value="sokoto">Sokoto</SelectItem>
+                        <SelectItem value="taraba">Taraba</SelectItem>
+                        <SelectItem value="yobe">Yobe</SelectItem>
+                        <SelectItem value="zamfara">Zamfara</SelectItem>
+                        <SelectItem value="fct">F.C.T</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

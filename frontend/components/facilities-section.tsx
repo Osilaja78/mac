@@ -4,11 +4,11 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import Lab from '@/public/images/laboratory.png'
+import Lab from '@/public/images/laboratory.jpg'
 import Sports from '@/public/images/games.jpeg'
-import ArtStudio from '@/public/images/art-studio.png'
-import Classroom from '@/public/images/classroom.png'
-import Hall from '@/public/images/hall.png'
+import ArtStudio from '@/public/images/art-studio.jpg'
+import Classroom from '@/public/images/classroom.jpg'
+import Hall from '@/public/images/hall.jpg'
 
 const facilities = [
   {

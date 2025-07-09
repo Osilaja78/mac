@@ -37,7 +37,7 @@ export default function Home() {
         <DialogContent className="max-w-[400px] max-h-[90vh] p-0 overflow-scroll">
           <div className="w-full">
             <Image
-              src="/images/entrance-banner.jpg"
+              src="/images/entrance-banner1.jpg"
               alt="Entrance Banner"
               width={1000}
               height={400}

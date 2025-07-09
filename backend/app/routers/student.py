@@ -12,6 +12,7 @@ from app.utils.database import get_db
 from app.utils.models import Student, ReportCard, ReadingMaterial
 from app.utils.schemas import StudentCreate, Token, StudentProfile, SubjectScoreResponse, ReportCardResponse
 from app.utils.token import create_access_token
+from app.utils.email import send_mail
 from dotenv import load_dotenv
 
 # Password hashing
@@ -47,7 +48,7 @@ def generate_admission_number(db: Session) -> str:
 
 
 @router.post("/students/signup", response_model=dict)
-def student_signup(student: StudentCreate, db: Session = Depends(get_db)):
+async def student_signup(student: StudentCreate, db: Session = Depends(get_db)):
     # Generate admission number
     admission_number = generate_admission_number(db)
     
@@ -75,6 +76,28 @@ def student_signup(student: StudentCreate, db: Session = Depends(get_db)):
         db.add(db_student)
         db.commit()
         db.refresh(db_student)
+
+        # Email content for successfule registration
+        content = f"""
+            <html>
+            <body>
+                <b>Hi, {student.full_name}</b></br>
+                <p>
+                    Welcome to <b>Mother's Aid Schools</b> portal, where you can find and manage anything
+                    related to your academics.
+                </p>
+                <p>
+                    Your admission number is <b>{admission_number}</b>, and you can use it to login to your portal.
+                </p>
+                <p>
+                    Now that you're registered, you can go ahead and login to have access to your portal.
+                </p>
+            </body>
+            </html>
+        """
+
+        await send_mail(email=student.guardian_email, content=content)
+
         return {
             "message": "Student registered successfully",
             "admission_number": admission_number
