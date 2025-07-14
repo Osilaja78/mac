@@ -63,7 +63,6 @@ class ReportCardCreate(BaseModel):
     principal_name: str
     teacher_remark: str
     principal_remark: str
-    first_term_average: Optional[float] = None
     subjects: List[SubjectScoreCreate]
     comments: List[TeacherCommentCreate]
 
@@ -202,7 +201,6 @@ async def create_report_card(
         principal_name=report_card.principal_name,
         teacher_remark=report_card.teacher_remark,
         principal_remark=report_card.principal_remark,
-        first_term_average=report_card.first_term_average,
         date_generated=datetime.now().date()
     )
     
@@ -359,7 +357,7 @@ async def download_report_card(
 
     # AVERAGE & COMMENTS
     summary_data = [
-        ["FIRST TERM %:", f"{report_card.first_term_average}", "SECOND TERM:", f"{average_score}%"],
+        ["AVERAGE:", f"{average_score}%"],
         ["POSITION IN CLASS:", f"{report_card.position_in_class}/{report_card.total_students}", "", ""]
     ]
     summary_table = Table(summary_data, colWidths=[100, 80, 100, 80])

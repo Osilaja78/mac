@@ -58,7 +58,6 @@ export function ReportCardForm({ onClose }: ReportCardFormProps) {
     principal_name: '',
     teacher_remark: '',
     principal_remark: '',
-    first_term_average: null as number | null,
     comments: [
       {
         comment_type: 'General',
@@ -431,20 +430,6 @@ export function ReportCardForm({ onClose }: ReportCardFormProps) {
                     principal_remark: e.target.value
                   }))}
                   placeholder="Principal's comment about the student's performance"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>First Term Average (Optional)</Label>
-                <Input
-                  type="number"
-                  step="0.01"
-                  value={formData.first_term_average || ''}
-                  onChange={e => setFormData(prev => ({
-                    ...prev,
-                    first_term_average: e.target.value ? Number(e.target.value) : null
-                  }))}
-                  placeholder="Enter first term average if available"
                 />
               </div>
               {/* </div> */}

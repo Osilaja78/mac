@@ -43,7 +43,7 @@ class ReportCardResponse(BaseModel):
     principal_name: Optional[str] = None
     teacher_remark: Optional[str] = None
     principal_remark: Optional[str] = None
-    first_term_average: Optional[float] = None
+    # first_term_average: Optional[float] = None
     subjects: List[SubjectScoreResponse]
 
     class Config:

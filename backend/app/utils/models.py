@@ -30,7 +30,7 @@ class Student(Base):
 class ReportCard(Base):
     __tablename__ = "report_cards"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(String(80), primary_key=True, index=True)
     student_id = Column(String, ForeignKey("students.admission_number"))
     term = Column(String)  # First, Second, Third
     session = Column(String)  # e.g. "2023/2024"
@@ -44,7 +44,6 @@ class ReportCard(Base):
     principal_name = Column(String)
     teacher_remark = Column(Text)
     principal_remark = Column(Text)
-    first_term_average = Column(Float, nullable=True)
     
     student = relationship("Student", back_populates="report_cards")
     subjects = relationship("SubjectScore", back_populates="report_card")
@@ -53,8 +52,8 @@ class ReportCard(Base):
 class SubjectScore(Base):
     __tablename__ = "subject_scores"
 
-    id = Column(Integer, primary_key=True, index=True)
-    report_card_id = Column(Integer, ForeignKey("report_cards.id"))
+    id = Column(String(80), primary_key=True, index=True)
+    report_card_id = Column(String, ForeignKey("report_cards.id"))
     subject_name = Column(String)
     ca_score = Column(Integer)  # Continuous Assessment
     exam_score = Column(Integer)
@@ -67,8 +66,8 @@ class SubjectScore(Base):
 class TeacherComment(Base):
     __tablename__ = "teacher_comments"
 
-    id = Column(Integer, primary_key=True, index=True)
-    report_card_id = Column(Integer, ForeignKey("report_cards.id"))
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    report_card_id = Column(String, ForeignKey("report_cards.id"))
     comment_type = Column(String)  # "Class Teacher", "Principal"
     comment = Column(Text)
 
