@@ -54,7 +54,7 @@ export default function ReportCardsPage() {
     term: '',
     session: ''
   });
-  const { toast } = useToast()
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchReportCards = async () => {
@@ -66,24 +66,24 @@ export default function ReportCardsPage() {
         })
 
         if (!response.ok) {
-          throw new Error('Failed to fetch report cards')
+          throw new Error('Failed to fetch report cards');
         }
 
-        const data = await response.json()
-        setReportCards(data)
-        setFilteredReportCards(data)
+        const data = await response.json();
+        setReportCards(data);
+        setFilteredReportCards(data);
       } catch (error) {
         toast({
           title: "Error",
           description: "Failed to load report cards",
           variant: "destructive"
-        })
+        });
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     }
 
-    fetchReportCards()
+    fetchReportCards();
   }, [toast]);
 
   useEffect(() => {

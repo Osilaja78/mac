@@ -34,10 +34,10 @@ interface DashboardInfo {
 }
 
 export default function AdminDashboardPage() {
-  const router = useRouter()
-  const { toast } = useToast()
-  const [dashboardInfo, setDashboardInfo] = useState<DashboardInfo | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter();
+  const { toast } = useToast();
+  const [dashboardInfo, setDashboardInfo] = useState<DashboardInfo | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchDashboardInfo = async () => {
@@ -49,24 +49,24 @@ export default function AdminDashboardPage() {
         })
 
         if (!response.ok) {
-          throw new Error('Failed to fetch dashboard information')
+          throw new Error('Failed to fetch dashboard information');
         }
 
-        const data = await response.json()
-        setDashboardInfo(data)
+        const data = await response.json();
+        setDashboardInfo(data);
       } catch (error) {
         toast({
           title: "Error",
           description: "Failed to load dashboard information",
           variant: "destructive"
-        })
+        });
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     }
 
-    fetchDashboardInfo()
-  }, [toast])
+    fetchDashboardInfo();
+  }, [toast]);
 
   const stats = [
     {

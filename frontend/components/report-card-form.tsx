@@ -189,6 +189,13 @@ export function ReportCardForm({ onClose }: ReportCardFormProps) {
                     <SelectValue placeholder="Select Class" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="PRESCHOOL">Pre-School</SelectItem>
+                    <SelectItem value="BASIC1">Basic 1</SelectItem>
+                    <SelectItem value="BASIC2">Basic 2</SelectItem>
+                    <SelectItem value="BASIC3">Basic 3</SelectItem>
+                    <SelectItem value="BASIC4">Basic 4</SelectItem>
+                    <SelectItem value="BASIC5">Basic 5</SelectItem>
+                    <SelectItem value="BASIC6">Basic 6</SelectItem>
                     <SelectItem value="JSS1">JSS 1</SelectItem>
                     <SelectItem value="JSS2">JSS 2</SelectItem>
                     <SelectItem value="JSS3">JSS 3</SelectItem>

@@ -18,7 +18,7 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-import os, mimetypes
+import os, uuid
 
 
 # Password hashing setup
@@ -190,6 +190,7 @@ async def create_report_card(
     
     # Create report card
     db_report_card = ReportCard(
+        id=str(uuid.uuid4()),
         student_id=report_card.admission_number,
         term=report_card.term,
         session=report_card.session,
@@ -420,6 +421,7 @@ async def create_reading_material(
         
         # Create reading material
         db_material = ReadingMaterial(
+            id=str(uuid.uuid4()),
             title=title,
             description=description,
             file_content=file_content,
@@ -469,7 +471,8 @@ async def get_all_dashboard_info(
 ):
     try:
         # Get total counts using aggregation
-        total_students = db.query(func.count(Student.id)).scalar()
+        total_students = db.query(func.count(Student.admission_number)).scalar()
+        print(total_students)
         total_report_cards = db.query(func.count(ReportCard.id)).scalar()
         total_materials = db.query(func.count(ReadingMaterial.id)).scalar()
         total_news = db.query(func.count(News.id)).scalar()
