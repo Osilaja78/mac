@@ -212,6 +212,7 @@ async def create_report_card(
         # Add subject scores
         for subject in report_card.subjects:
             db_subject = SubjectScore(
+                id=str(uuid.uuid4()),
                 report_card_id=db_report_card.id,
                 subject_name=subject.subject_name,
                 ca_score=subject.ca_score,
