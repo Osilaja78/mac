@@ -30,7 +30,7 @@ class SubjectScoreResponse(BaseModel):
         from_attributes = True
 
 class ReportCardResponse(BaseModel):
-    id: int
+    id: str
     term: str
     session: str
     class_name: str
