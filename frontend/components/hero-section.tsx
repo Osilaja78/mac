@@ -8,9 +8,11 @@ import Image from 'next/image';
 import Building1 from '@/public/images/building1.jpg';
 import Lab3 from '@/public/images/lab3_c.jpg';
 import Lab5 from '@/public/images/lab5.jpg';
+import Student from '@/public/images/students_hero.jpg';
 
 const images = [
   Building1,
+  Student,
   Lab3,
   Lab5
 ]
