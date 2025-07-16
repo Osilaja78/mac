@@ -35,15 +35,15 @@ class ReportCard(Base):
     term = Column(String)  # First, Second, Third
     session = Column(String)  # e.g. "2023/2024"
     class_name = Column(String)  # e.g. "JSS1", "SSS3"
-    position_in_class = Column(Integer)
-    total_students = Column(Integer)
+    position_in_class = Column(Integer, nullable=True)
+    total_students = Column(Integer, nullable=True)
     attendance = Column(Integer)
     date_generated = Column(Date)
 
-    teacher_name = Column(String)
-    principal_name = Column(String)
-    teacher_remark = Column(Text)
-    principal_remark = Column(Text)
+    teacher_name = Column(String, nullable=True)
+    principal_name = Column(String, nullable=True)
+    teacher_remark = Column(Text, nullable=True)
+    principal_remark = Column(Text, nullable=True)
     
     student = relationship("Student", back_populates="report_cards")
     subjects = relationship("SubjectScore", back_populates="report_card")

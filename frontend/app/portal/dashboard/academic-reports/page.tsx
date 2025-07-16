@@ -18,6 +18,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { isDayOfWeekType } from 'react-day-picker';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -31,7 +32,7 @@ interface SubjectScore {
 }
 
 interface ReportCard {
-  id: number
+  id: string
   term: string
   session: string
   class_name: string
@@ -45,6 +46,7 @@ interface ReportCard {
 export default function ReportCardsPage() {
   const [reportCards, setReportCards] = useState<ReportCard[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isDownloading, setIsDownloading] = useState(false);
   const [selectedTerm, setSelectedTerm] = useState<string>('all');
   const [selectedSession, setSelectedSession] = useState<string>('all');
   const { toast } = useToast();
@@ -96,8 +98,43 @@ export default function ReportCardsPage() {
   }
 
   useEffect(() => {
-    fetchReportCards()
-  }, [selectedTerm, selectedSession])
+    fetchReportCards();
+  }, [selectedTerm, selectedSession]);
+
+  const handleDownload = async (reportId: string) => {
+    setIsDownloading(true);
+    try {
+      const response = await fetch(`${API_URL}/admin/report-cards/${reportId}/download`);
+  
+      if (!response.ok) {
+        setIsDownloading(false);
+        throw new Error('Failed to download report');
+      }
+  
+      // Create blob from response
+      const blob = await response.blob();
+      
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `report_card_${reportId}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      
+      // Cleanup
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      setIsDownloading(false);
+    } catch (error) {
+      setIsDownloading(false);
+      toast({
+        title: "Error",
+        description: "Failed to download report card",
+        variant: "destructive"
+      });
+    }
+  };
 
   const groupedReportCards = reportCards.reduce((acc, card) => {
     const key = card.session
@@ -211,7 +248,7 @@ export default function ReportCardsPage() {
 														Class: {card.class_name} • Position: {card.position_in_class}/{card.total_students}
 													</p>
 												</div>
-												<Button variant="outline" size="sm">
+												<Button variant="outline" size="sm" onClick={() => handleDownload(card.id)} disabled={isDownloading}>
 													<Download className="h-4 w-4 mr-2" />
 													Download
 												</Button>

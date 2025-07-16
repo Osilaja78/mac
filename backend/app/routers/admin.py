@@ -56,15 +56,40 @@ class ReportCardCreate(BaseModel):
     term: str
     session: str
     class_name: str
-    position_in_class: int
-    total_students: int
+    position_in_class: Optional[int]
+    total_students: Optional[int]
     attendance: int
-    teacher_name: str
-    principal_name: str
-    teacher_remark: str
-    principal_remark: str
+    teacher_name: Optional[str]
+    principal_name: Optional[str]
+    teacher_remark: Optional[str]
+    principal_remark: Optional[str]
     subjects: List[SubjectScoreCreate]
     comments: List[TeacherCommentCreate]
+
+class SubjectScoreUpdate(BaseModel):
+    subject_name: str
+    ca_score: Optional[float] = None
+    exam_score: Optional[float] = None
+    grade: Optional[str] = None
+    teacher_remark: Optional[str] = None
+
+class TeacherCommentUpdate(BaseModel):
+    comment_type: str
+    comment: str
+
+class ReportCardUpdate(BaseModel):
+    term: Optional[str]
+    session: Optional[str]
+    class_name: Optional[str]
+    position_in_class: Optional[int]
+    total_students: Optional[int]
+    attendance: Optional[int]
+    teacher_name: Optional[str]
+    principal_name: Optional[str]
+    teacher_remark: Optional[str]
+    principal_remark: Optional[str]
+    subjects: Optional[List[SubjectScoreUpdate]] = []
+    comments: Optional[List[TeacherCommentUpdate]] = []
 
 class ReadingMaterialCreate(BaseModel):
     title: str
@@ -242,6 +267,89 @@ async def create_report_card(
         )
 
 
+@router.put("/admin/report-cards/{report_card_id}", response_model=dict)
+async def update_report_card(
+    report_card_id: str,
+    report_card_update: ReportCardUpdate,
+    current_admin: Admin = Depends(get_current_admin),
+    db: Session = Depends(get_db)
+):
+    db_report_card = db.query(ReportCard).filter(ReportCard.id == report_card_id).first()
+    
+    if not db_report_card:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Report card not found"
+        )
+    
+    # Update simple fields
+    update_fields = report_card_update.model_dump(exclude_unset=True, exclude={"subjects", "comments"})
+    for field, value in update_fields.items():
+        setattr(db_report_card, field, value)
+    
+    try:
+        # Handle subjects
+        if report_card_update.subjects:
+            for subject_data in report_card_update.subjects:
+                existing_subject = db.query(SubjectScore).filter(
+                    SubjectScore.report_card_id == report_card_id,
+                    SubjectScore.subject_name == subject_data.subject_name
+                ).first()
+                
+                if existing_subject:
+                    # Update existing subject
+                    if subject_data.ca_score is not None:
+                        existing_subject.ca_score = subject_data.ca_score
+                    if subject_data.exam_score is not None:
+                        existing_subject.exam_score = subject_data.exam_score
+                    if subject_data.grade is not None:
+                        existing_subject.grade = subject_data.grade
+                    if subject_data.teacher_remark is not None:
+                        existing_subject.teacher_remark = subject_data.teacher_remark
+                    existing_subject.total_score = (existing_subject.ca_score or 0) + (existing_subject.exam_score or 0)
+                else:
+                    # Add new subject
+                    new_subject = SubjectScore(
+                        id=str(uuid.uuid4()),
+                        report_card_id=report_card_id,
+                        subject_name=subject_data.subject_name,
+                        ca_score=subject_data.ca_score or 0,
+                        exam_score=subject_data.exam_score or 0,
+                        total_score=(subject_data.ca_score or 0) + (subject_data.exam_score or 0),
+                        grade=subject_data.grade,
+                        teacher_remark=subject_data.teacher_remark
+                    )
+                    db.add(new_subject)
+        
+        # Handle comments
+        if report_card_update.comments:
+            for comment_data in report_card_update.comments:
+                existing_comment = db.query(TeacherComment).filter(
+                    TeacherComment.report_card_id == report_card_id,
+                    TeacherComment.comment_type == comment_data.comment_type
+                ).first()
+                
+                if existing_comment:
+                    existing_comment.comment = comment_data.comment
+                else:
+                    new_comment = TeacherComment(
+                        report_card_id=report_card_id,
+                        comment_type=comment_data.comment_type,
+                        comment=comment_data.comment
+                    )
+                    db.add(new_comment)
+        
+        db.commit()
+        return {"message": "Report card updated successfully"}
+    
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Update failed: {str(e)}"
+        )
+
+
 @router.get("/admin/report-cards", response_model=List[ReportCardResponse])
 async def get_all_report_cards(
     current_admin: Admin = Depends(get_current_admin),
@@ -264,8 +372,7 @@ async def get_all_report_cards(
 
 @router.get("/admin/report-cards/{report_id}/download")
 async def download_report_card(
-    report_id: int,
-    current_admin: Admin = Depends(get_current_admin),
+    report_id: str,
     db: Session = Depends(get_db)
 ):
     report_card = db.query(ReportCard)\
@@ -288,9 +395,9 @@ async def download_report_card(
 
     # SCHOOL HEADER
     logo_path = "logo-bg.jpeg"  # Make sure the logo file exist
-    logo = Image(logo_path, width=60, height=60)
-    school_name = Paragraph("""<b>MOTHER'S AID COLLEGE</b><br/><font size=10>(A DIVISION OF NASURULLAH)</font><br/><font size=8>Morals Achieving Intellectual and Personal Excellence</font>""", styles['Title'])
-    header_table = Table([[logo, school_name]], colWidths=[70, 400])
+    logo = Image(logo_path, width=100, height=100)
+    school_name = Paragraph("""<font size=30><b>MOTHER'S AID COLLEGE</b></font><br/><font size=15>(A DIVISION OF NASURULLAH)</font><br/><font size=10>Achieving Intellectual and Personal Excellence</font>""", styles['Title'])
+    header_table = Table([[logo, school_name]], colWidths=[80, 500])
     header_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ('LEFTPADDING', (1, 0), (1, 0), 10),
@@ -312,7 +419,7 @@ async def download_report_card(
         ['D.O.B', student.date_of_birth, 'AGE', str(age)],
         ['TERM', report_card.term, 'ADMISSION NO.', student.admission_number],
     ]
-    student_table = Table(student_info, colWidths=[60, 150, 60, 150])
+    student_table = Table(student_info, colWidths=[60, 150, 120, 150])
     student_table.setStyle(TableStyle([
         ('GRID', (0, 0), (-1, -1), 0.25, colors.black),
         ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
@@ -334,7 +441,7 @@ async def download_report_card(
             report_card.position_in_class,
             subject.teacher_remark
         ])
-    subject_table = Table(subject_data, colWidths=[100, 40, 40, 40, 50, 50, 130])
+    subject_table = Table(subject_data, colWidths=[150, 40, 40, 40, 50, 50, 130])
     subject_table.setStyle(TableStyle([
         ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
         ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),

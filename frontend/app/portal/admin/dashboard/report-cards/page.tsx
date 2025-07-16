@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Plus, Filter, Download, Loader2 } from 'lucide-react';
+import { Plus, Filter, Download, Loader2, PlusCircle } from 'lucide-react';
 import { ReportCardForm } from '@/components/report-card-form';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -46,9 +46,12 @@ interface ReportCard {
 
 export default function ReportCardsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedReportCardId, setSelectedReportCardId] = useState("");
+  const [initialFormData, setInitialFormData] = useState<ReportCard | undefined>();
   const [reportCards, setReportCards] = useState<ReportCard[]>([]);
   const [filteredReportCards, setFilteredReportCards] = useState<ReportCard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDownloading, setIsDownloading] = useState(false);
   const [filters, setFilters] = useState({
     class: '',
     term: '',
@@ -107,14 +110,12 @@ export default function ReportCardsPage() {
   const uniqueSessions = Array.from(new Set(reportCards.map(card => card.session)));
 
   const handleDownload = async (reportId: string) => {
+    setIsDownloading(true);
     try {
-      const response = await fetch(`${API_URL}/admin/report-cards/${reportId}/download`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
-        }
-      });
+      const response = await fetch(`${API_URL}/admin/report-cards/${reportId}/download`);
   
       if (!response.ok) {
+        setIsDownloading(false);
         throw new Error('Failed to download report');
       }
   
@@ -132,7 +133,9 @@ export default function ReportCardsPage() {
       // Cleanup
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
+      setIsDownloading(false);
     } catch (error) {
+      setIsDownloading(false);
       toast({
         title: "Error",
         description: "Failed to download report card",
@@ -140,6 +143,13 @@ export default function ReportCardsPage() {
       });
     }
   };
+
+  const handleUpdate = (card: ReportCard) => {
+    setSelectedReportCardId(card.id);
+    setInitialFormData(card);
+    setIsFormOpen(true);
+  }
+  
 
   return (
     <div className="p-6">
@@ -278,8 +288,18 @@ export default function ReportCardsPage() {
                       variant="outline" 
                       className="w-full" 
                       size="sm"
+                      onClick={() => handleUpdate(card)}
+                    >
+                      <PlusCircle className="h-4 w-4 mr-2" />
+                      Update Report
+                    </Button>
+
+                    <Button 
+                      variant="outline" 
+                      className="w-full" 
+                      size="sm"
                       onClick={() => handleDownload(card.id)}
-                      disabled={isLoading}
+                      disabled={isDownloading}
                     >
                       {isLoading ? (
                         <span className="flex items-center">
@@ -301,7 +321,15 @@ export default function ReportCardsPage() {
         </motion.div>
 
         {isFormOpen && (
-          <ReportCardForm onClose={() => setIsFormOpen(false)} />
+          <ReportCardForm 
+            onClose={() => {
+              setIsFormOpen(false)
+              setInitialFormData(undefined)
+              setSelectedReportCardId("")
+            }}
+            reportCardId={selectedReportCardId}
+            initialData={initialFormData}
+          />
         )}
       </div>
     </div>

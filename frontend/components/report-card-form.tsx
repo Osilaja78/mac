@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -33,21 +33,23 @@ interface TeacherComment {
 
 interface ReportCardFormProps {
   onClose: () => void
+  reportCardId?: string
+  initialData?: any
 }
 
-export function ReportCardForm({ onClose }: ReportCardFormProps) {
-  const { toast } = useToast()
-  const [isLoading, setIsLoading] = useState(false)
-  const [subjects, setSubjects] = useState<SubjectScore[]>([])
+export function ReportCardForm({ onClose, reportCardId, initialData }: ReportCardFormProps) {
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+  const [subjects, setSubjects] = useState<SubjectScore[]>([]);
   const [currentSubject, setCurrentSubject] = useState<SubjectScore>({
     subject_name: '',
     ca_score: 0,
     exam_score: 0,
     grade: '',
     teacher_remark: ''
-  })
+  });
   const [formData, setFormData] = useState({
-    admission_number: '',
+    student_id: '',
     term: '',
     session: '',
     class_name: '',
@@ -64,7 +66,19 @@ export function ReportCardForm({ onClose }: ReportCardFormProps) {
         comment: ''
       }
     ]
-  })
+  });
+
+  const isUpdate = Boolean(reportCardId);
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        ...initialData,
+        comments: initialData.comments || []
+      });
+      setSubjects(initialData.subjects || []);
+    }
+  }, [initialData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -81,8 +95,8 @@ export function ReportCardForm({ onClose }: ReportCardFormProps) {
     }
 
     try {
-      const response = await fetch(`${API_URL}/admin/report-cards`, {
-        method: 'POST',
+      const response = await fetch(isUpdate ? `${API_URL}/admin/report-cards/${reportCardId}` : `${API_URL}/admin/report-cards`, {
+        method: isUpdate ? 'PUT' : 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
@@ -168,10 +182,10 @@ export function ReportCardForm({ onClose }: ReportCardFormProps) {
                 <Label>Admission Number</Label>
                 <Input
                   required
-                  value={formData.admission_number}
+                  value={formData.student_id}
                   onChange={e => setFormData(prev => ({
                     ...prev,
-                    admission_number: e.target.value
+                    student_id: e.target.value
                   }))}
                 />
               </div>
@@ -439,9 +453,16 @@ export function ReportCardForm({ onClose }: ReportCardFormProps) {
               <Button type="button" variant="outline" onClick={onClose}>
                 Cancel
               </Button>
-              <Button type="submit" disabled={isLoading}>
-                {isLoading ? "Creating..." : "Create Report Card"}
-              </Button>
+              {isUpdate && (
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading  ? "Updating..." : "Update Report Card"}
+                </Button>
+              )}
+              {!isUpdate && (
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? "Creating..." : "Create Report Card"}
+                </Button>
+              )}
             </div>
           </form>
         </Card>
