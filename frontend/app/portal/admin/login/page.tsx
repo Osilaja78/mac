@@ -49,14 +49,19 @@ export default function AdminLoginPage() {
         throw new Error(data.detail || 'Login failed')
       }
 
-      localStorage.setItem('adminToken', data.access_token)
+      localStorage.setItem('adminToken', data.access_token);
+      localStorage.setItem('adminRole', data.role);
       
       toast({
         title: "Login successful",
         description: "Welcome to the admin dashboard",
       })
 
-      router.push('/portal/admin/dashboard')
+      if (data.role == 'teacher') {
+        router.push('/portal/admin/dashboard/report-cards')
+      } else {
+        router.push('/portal/admin/dashboard')
+      }
     } catch (error) {
       toast({
         title: "Login failed",

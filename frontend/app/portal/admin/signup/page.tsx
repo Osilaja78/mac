@@ -174,9 +174,9 @@ export default function AdminSignupPage() {
                     <SelectValue placeholder="Select role" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="admin">Admin</SelectItem>
+                    {/* <SelectItem value="admin">Admin</SelectItem> */}
                     <SelectItem value="teacher">Teacher</SelectItem>
-                    <SelectItem value="principal">Principal</SelectItem>
+                    {/* <SelectItem value="principal">Principal</SelectItem> */}
                   </SelectContent>
                 </Select>
               </div>

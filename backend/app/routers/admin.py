@@ -10,7 +10,7 @@ from passlib.context import CryptContext
 from pydantic import BaseModel, EmailStr
 from app.utils.database import get_db
 from app.utils.models import Admin, Student, ReportCard, SubjectScore, TeacherComment, ReadingMaterial, News
-from app.utils.schemas import StudentResponse, StudentUpdate, DashboardInfo, ReportCardResponse, NewsResponse
+from app.utils.schemas import StudentResponse, AdminResponse, StudentUpdate, DashboardInfo, ReportCardResponse, NewsResponse
 from app.utils.token import create_access_token
 from dotenv import load_dotenv
 from io import BytesIO
@@ -18,6 +18,7 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from app.utils.email import send_mail, EMAIL_SENDER
 import os, uuid
 
 
@@ -39,6 +40,9 @@ class AdminCreate(BaseModel):
     full_name: str
     password: str
     role: str
+
+class AdminVerify(BaseModel):
+    username: str
 
 class SubjectScoreCreate(BaseModel):
     subject_name: str
@@ -141,6 +145,12 @@ async def admin_login(
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
+    if admin.is_active == False:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Your registration has not been verified by the school admin",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     
     # Verify password
     if not pwd_context.verify(form_data.password, admin.hashed_password):
@@ -183,20 +193,68 @@ async def register_admin(admin: AdminCreate, db: Session = Depends(get_db)):
         full_name=admin.full_name,
         hashed_password=pwd_context.hash(admin.password),
         role=admin.role,
-        is_active=True
+        is_active=False # New teachers that are registering will have to be confirmed by the admin
     )
+
+    content = f"""
+        <html>
+        <body>
+            <b>New administrator registered with the following details:</b></br>
+            <p>
+                - Role: {admin.role.capitalize()}.
+            </p>
+            <p>
+                - Full Name: {admin.full_name}.
+            </p>
+            <p>
+                - Email: {admin.email}.
+            </p>
+            <p>
+                - Username: {admin.username}.
+            </p>
+            <p>
+                To verify them, please visit your admin portal for them to be able to login.
+            </p>
+        </body>
+        </html>
+    """
+
+    await send_mail(EMAIL_SENDER, content)
     
     try:
         db.add(db_admin)
         db.commit()
         db.refresh(db_admin)
-        return {"message": "Admin registered successfully"}
+        return {"message": f"{admin.role.capitalize()} registered successfully, the school admin has been notified. You'll be able to login once your account is verified."}
     except Exception as e:
         db.rollback()
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
         )
+
+@router.put("/admin/verify-admin", response_model=dict)
+async def verify_an_admin(
+    request: AdminVerify,
+    current_admin: Admin = Depends(get_current_admin),
+    db: Session = Depends(get_db)
+):
+    print(request)
+    existing_admin = db.query(Admin).filter(Admin.username == request.username).first()
+    
+    if existing_admin:
+        existing_admin.is_active = True
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid admin username!"
+        )
+    
+    db.commit()
+    db.refresh(existing_admin)
+
+    return { "message": f"Admin with username {request.username} has been verified successfully!"}
+
 
 @router.post("/admin/report-cards", response_model=dict)
 async def create_report_card(
@@ -396,7 +454,7 @@ async def download_report_card(
     # SCHOOL HEADER
     logo_path = "logo-bg.jpeg"  # Make sure the logo file exist
     logo = Image(logo_path, width=100, height=100)
-    school_name = Paragraph("""<font size=30><b>MOTHER'S AID COLLEGE</b></font><br/><font size=15>(A DIVISION OF NASURULLAH)</font><br/><font size=10>Achieving Intellectual and Personal Excellence</font>""", styles['Title'])
+    school_name = Paragraph("""<font size=30><b>MOTHER'S AID COLLEGE</b></font><br/><font size=15>STUDENT'S OFFICIAL ACADEMIC REPORT</font><br/><font size=10>Achieving Intellectual and Personal Excellence</font>""", styles['Title'])
     header_table = Table([[logo, school_name]], colWidths=[80, 500])
     header_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
@@ -404,7 +462,7 @@ async def download_report_card(
     ]))
     elements.append(header_table)
     elements.append(Spacer(1, 12))
-    elements.append(Paragraph("<b>OFFICIAL ACADEMIC RESULT</b>", styles['Heading2']))
+    # elements.append(Paragraph("<b>OFFICIAL ACADEMIC RESULT</b>", styles['Heading2']))
 
     # Calculate student's age
     today = datetime.now().date()
@@ -477,13 +535,13 @@ async def download_report_card(
     elements.append(Spacer(1, 10))
 
     # REMARKS
-    elements.append(Paragraph(f"Teacher's Remark: {report_card.teacher_remark}", styles['Normal']))
-    elements.append(Paragraph(f"Principal's Remark: {report_card.principal_remark}", styles['Normal']))
-    elements.append(Spacer(1, 10))
-
-    # SIGNATURES
     elements.append(Paragraph(f"TEACHER'S NAME: {report_card.teacher_name}", styles['Normal']))
+    elements.append(Paragraph(f"Teacher's Remark: {report_card.teacher_remark}", styles['Normal']))
+    elements.append(Spacer(1, 10))
+    elements.append(Paragraph(f"Principal's Remark: {report_card.principal_remark}", styles['Normal']))
     elements.append(Paragraph(f"PRINCIPAL'S NAME: {report_card.principal_name}", styles['Normal']))
+    elements.append(Spacer(1, 10))
+    
 
     doc.build(elements)
     buffer.seek(0)
@@ -818,5 +876,20 @@ async def update_student(
         db.rollback()
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+@router.get("/admin/all-admin", response_model=List[AdminResponse])
+async def get_all_admin(
+    current_admin: Admin = Depends(get_current_admin),
+    db: Session = Depends(get_db),
+):
+    try:
+        query = db.query(Admin).all()
+        
+        return query
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(e)
         )

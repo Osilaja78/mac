@@ -115,6 +115,16 @@ class StudentResponse(BaseModel):
     class Config:
         from_attributes = True
 
+class AdminResponse(BaseModel):
+    full_name: str
+    username: str
+    email: str
+    role: str
+    is_active: bool
+
+    class Config:
+        from_attributes = True
+
 class StudentUpdate(BaseModel):
     full_name: str
     admission_number: str

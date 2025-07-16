@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { cn } from "@/lib/utils"
@@ -15,17 +15,18 @@ import {
   Menu,
   X,
   LogOut,
-  Upload,
+  User2,
   BookOpen
-} from 'lucide-react'
-import { Button } from '@/components/ui/button'
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-const navigation = [
+const fullNavigation = [
   { name: 'Dashboard', href: '/portal/admin/dashboard', icon: LayoutDashboard },
   { name: 'Students', href: '/portal/admin/dashboard/students', icon: Users },
   { name: 'Report Cards', href: '/portal/admin/dashboard/report-cards', icon: GraduationCap },
   { name: 'Reading Materials', href: '/portal/admin/dashboard/materials', icon: Book },
   { name: 'News & Updates', href: '/portal/admin/dashboard/news', icon: FileText },
+  { name: 'Admins', href: '/portal/admin/dashboard/admins', icon: User2 },
   { name: 'Settings', href: '/portal/admin/dashboard/settings', icon: Settings },
 ]
 
@@ -34,18 +35,38 @@ export default function AdminDashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const pathname = usePathname()
-  const router = useRouter()
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [adminRole, setAdminRole] = useState<'admin' | 'teacher' | 'principal' | null>(null)
+  const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    const storedRole = localStorage.getItem('adminRole') as 'admin' | 'teacher' | 'principal' | null
+    if (!storedRole) {
+      router.push('/portal/admin/login');
+    } else {
+      setAdminRole(storedRole);
+    }
+  }, [router])
 
   const handleLogout = () => {
     try {
-      localStorage.removeItem('adminToken')
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminRole');
       router.push('/portal/admin/login')
     } catch (error) {
       console.error('Logout error:', error)
     }
   }
+
+   // Filter navigation based on role
+   const navigation = fullNavigation.filter(item => {
+    if (adminRole === 'teacher') {
+      // Teachers can't see "Admins" or "Settings"
+      return item.name !== 'Dashboard' && item.name !== 'Reading Materials' && item.name !== 'News & Updates' && item.name !== 'Admins' && item.name !== 'Settings'
+    }
+    return true
+  })
 
   return (
     <div className="min-h-screen bg-[#f9f7f4]">
