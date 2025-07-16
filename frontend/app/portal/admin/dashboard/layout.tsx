@@ -36,12 +36,12 @@ export default function AdminDashboardLayout({
   children: React.ReactNode
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [adminRole, setAdminRole] = useState<'admin' | 'teacher' | 'principal' | null>(null)
+  const [adminRole, setAdminRole] = useState<'admin' | 'teacher' | 'principal' | null>(null);
   const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
-    const storedRole = localStorage.getItem('adminRole') as 'admin' | 'teacher' | 'principal' | null
+    const storedRole = localStorage.getItem('adminRole') as 'admin' | 'teacher' | 'principal' | null;
     if (!storedRole) {
       router.push('/portal/admin/login');
     } else {

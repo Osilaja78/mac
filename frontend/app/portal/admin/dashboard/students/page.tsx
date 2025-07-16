@@ -51,9 +51,12 @@ export default function StudentsPage() {
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [adminRole, setAdminRole] = useState<'admin' | 'teacher' | 'principal' | null>(null)
   const { toast } = useToast();
 
   useEffect(() => {
+    const storedRole = localStorage.getItem('adminRole') as 'admin' | 'teacher' | 'principal' | null;
+    setAdminRole(storedRole);
     fetchStudents();
   }, [])
 
@@ -236,7 +239,7 @@ export default function StudentsPage() {
                   <p className="text-sm"><span className="font-medium">Email:</span> {student.guardian_email}</p>
                 </div>
 
-                <Button 
+                {adminRole === 'admin' && (<Button 
                   variant="outline" 
                   className="w-full"
                   onClick={() => {
@@ -245,7 +248,7 @@ export default function StudentsPage() {
                   }}
                 >
                   Update Details
-                </Button>
+                </Button>)}
               </Card>
             ))}
           </div>

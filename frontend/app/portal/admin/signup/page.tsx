@@ -230,7 +230,7 @@ export default function AdminSignupPage() {
           <div className="mt-6 text-center text-sm text-gray-600">
             Already have an account?{" "}
             <Link
-              href="/admin/login"
+              href="/portal/admin/login"
               className="text-primary hover:underline font-medium"
             >
               Login here
