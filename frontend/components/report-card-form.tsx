@@ -49,7 +49,7 @@ export function ReportCardForm({ onClose, reportCardId, initialData }: ReportCar
     teacher_remark: ''
   });
   const [formData, setFormData] = useState({
-    student_id: '',
+    admission_number: '',
     term: '',
     session: '',
     class_name: '',
@@ -182,10 +182,10 @@ export function ReportCardForm({ onClose, reportCardId, initialData }: ReportCar
                 <Label>Admission Number</Label>
                 <Input
                   required
-                  value={formData.student_id}
+                  value={formData.admission_number}
                   onChange={e => setFormData(prev => ({
                     ...prev,
-                    student_id: e.target.value
+                    admission_number: e.target.value
                   }))}
                 />
               </div>
