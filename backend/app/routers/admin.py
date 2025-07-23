@@ -44,6 +44,10 @@ class AdminCreate(BaseModel):
 class AdminVerify(BaseModel):
     username: str
 
+class ResetAdminPassword(BaseModel):
+    username: Optional[str]
+    new_password: str
+
 class SubjectScoreCreate(BaseModel):
     subject_name: str
     ca_score: int
@@ -132,6 +136,31 @@ async def get_current_admin(
     return admin
 
 
+@router.post("/admin/reset-password")
+async def reset_admin_password(request: ResetAdminPassword, current_admin: Admin = Depends(get_current_admin), db: Session = Depends(get_db)):
+        
+    admin = db.query(Admin).filter(Admin.username == request.username).first()
+    if not admin:
+        admin = db.query(Admin).filter(Admin.email == request.username).first()
+    
+    if not admin:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Email or username required for ",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    hashed_password=pwd_context.hash(request.new_password)
+
+    admin.hashed_password = hashed_password
+
+    db.commit()
+    db.refresh(admin)
+
+    return { "message": "Password has been updated successfully! You can now login with your new password."}
+
+
+
 @router.post("/admin/token")
 async def admin_login(
     form_data: OAuth2PasswordRequestForm = Depends(),
@@ -188,7 +217,7 @@ async def register_admin(admin: AdminCreate, db: Session = Depends(get_db)):
     
     # Create new admin
     db_admin = Admin(
-        username=admin.username,
+        username=admin.username.strip(),
         email=admin.email,
         full_name=admin.full_name,
         hashed_password=pwd_context.hash(admin.password),
