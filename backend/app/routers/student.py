@@ -7,6 +7,7 @@ from datetime import datetime
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from app.utils.database import get_db
 from app.utils.models import Student, ReportCard, ReadingMaterial
@@ -14,6 +15,7 @@ from app.utils.schemas import StudentCreate, Token, StudentProfile, SubjectScore
 from app.utils.token import create_access_token
 from app.utils.email import send_mail
 from dotenv import load_dotenv
+from io import BytesIO
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -26,6 +28,10 @@ ALGORITHM = os.getenv('ALGORITHM')
 ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES')
 
 router = APIRouter(tags=["Students"])
+
+class ResetStudentPassword(BaseModel):
+    admission_number: Optional[str]
+    new_password: str
 
 def generate_admission_number(db: Session) -> str:
     """Generate a unique admission number based on year and sequential number"""
@@ -235,13 +241,16 @@ async def get_reading_materials(
         ReadingMaterial.is_active == True
     ).all()
     
+    # Generate download URL for each material
     return {
         "reading_materials": [
             {
                 "title": material.title,
                 "description": material.description,
                 "subject": material.subject,
-                "file_url": material.file_url,
+                "file_url": f"/students/reading-materials/{material.id}/download",  # Create download endpoint URL
+                "file_name": material.file_name,
+                "file_type": material.file_type,
                 "upload_date": material.upload_date,
                 "term": material.term,
                 "session": material.session
@@ -249,3 +258,55 @@ async def get_reading_materials(
             for material in materials
         ]
     }
+
+@router.get("/students/reading-materials/{material_id}/download")
+async def download_material(
+    material_id: str,
+    current_student: Student = Depends(get_current_student),
+    db: Session = Depends(get_db)
+):
+    # Fetch the material
+    material = db.query(ReadingMaterial).filter(
+        ReadingMaterial.id == material_id,
+        ReadingMaterial.class_assigned == current_student.current_class,
+        ReadingMaterial.is_active == True
+    ).first()
+    
+    if not material:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Reading material not found"
+        )
+    
+    # Create file-like object from binary content
+    file_like = BytesIO(material.file_content)
+    
+    # Return streaming response with proper headers
+    return StreamingResponse(
+        file_like,
+        media_type=material.file_type,
+        headers={
+            'Content-Disposition': f'attachment; filename="{material.file_name}"'
+        }
+    )
+
+@router.post("/student/reset-password")
+async def reset_student_password(request: ResetStudentPassword, db: Session = Depends(get_db)):
+        
+    student = db.query(Student).filter(Student.admission_number == request.admission_number).first()
+    
+    if not student:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Email or username required for ",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    hashed_password=pwd_context.hash(request.new_password)
+
+    student.hashed_password = hashed_password
+
+    db.commit()
+    db.refresh(student)
+
+    return { "message": "Password has been updated successfully! You can now login with your new password."}

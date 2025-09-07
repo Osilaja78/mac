@@ -1,9 +1,10 @@
 "use client"
 
-import { motion } from 'framer-motion'
-import Image from 'next/image'
-import { Button } from '@/components/ui/button'
-import { ArrowRight, CheckCircle2 } from 'lucide-react'
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import Link from 'next/link';
 
 export function AdmissionsProcess() {
   const steps = [
@@ -79,10 +80,12 @@ export function AdmissionsProcess() {
             </div>
             
             <div className="mt-10">
-              <Button className="bg-primary hover:bg-primary/90 text-white rounded-full group">
-                Apply Now
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Button>
+              <Link href="https://forms.gle/ZxaMmcEPJYBVaGhu5" target='_blank'>
+                <Button className="bg-primary hover:bg-primary/90 text-white rounded-full group">
+                  Apply Now
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </Button>
+              </Link>
             </div>
           </motion.div>
           

@@ -9,6 +9,8 @@ import Building1 from '@/public/images/building1.jpg';
 import Lab3 from '@/public/images/lab3_c.jpg';
 import Lab5 from '@/public/images/lab5.jpg';
 import Student from '@/public/images/students_hero.jpg';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const images = [
   Building1,
@@ -27,6 +29,8 @@ const stats = [
 export function HeroSection() {
   const [currentImage, setCurrentImage] = useState(0);
   const [isBrowser, setIsBrowser] = useState(false);
+
+  const router = useRouter();
   
   useEffect(() => {
     setIsBrowser(typeof window !== 'undefined');
@@ -123,22 +127,25 @@ export function HeroSection() {
               transition={{ duration: 0.8, delay: 1.1 }}
               className="flex flex-wrap gap-4"
             >
-              <Button
-                size="lg"
-                className="bg-primary hover:bg-primary/90 text-white rounded-full px-8 group relative overflow-hidden"
-              >
-                <span className="relative z-10">Apply Now</span>
-                <motion.div
-                  className="absolute inset-0 bg-white/20"
-                  initial={{ x: "-100%" }}
-                  whileHover={{ x: "100%" }}
-                  transition={{ duration: 0.5 }}
-                />
-              </Button>
+              <Link href='https://forms.gle/ZxaMmcEPJYBVaGhu5' target="_blank" rel="noopener noreferrer">
+                <Button
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-white rounded-full px-8 group relative overflow-hidden"
+                >
+                  <span className="relative z-10">Apply Now</span>
+                  <motion.div
+                    className="absolute inset-0 bg-white/20"
+                    initial={{ x: "-100%" }}
+                    whileHover={{ x: "100%" }}
+                    transition={{ duration: 0.5 }}
+                  />
+                </Button>
+              </Link>
 
               <Button
                 size="lg"
                 variant="outline"
+                onClick={() => router.push('/about/history')}
                 className="border-gray-300 text-gray-700 hover:bg-gray-100 rounded-full px-8 group"
               >
                 Learn More

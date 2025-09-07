@@ -268,7 +268,6 @@ async def verify_an_admin(
     current_admin: Admin = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    print(request)
     existing_admin = db.query(Admin).filter(Admin.username == request.username).first()
     
     if existing_admin:
@@ -450,7 +449,6 @@ async def get_all_report_cards(
 
         return report_cards
     except Exception as e:
-        print(e)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(e)
@@ -483,7 +481,7 @@ async def download_report_card(
     # SCHOOL HEADER
     logo_path = "logo-bg.jpeg"  # Make sure the logo file exist
     logo = Image(logo_path, width=100, height=100)
-    school_name = Paragraph("""<font size=30><b>MOTHER'S AID COLLEGE</b></font><br/><font size=15>STUDENT'S OFFICIAL ACADEMIC REPORT</font><br/><font size=10>Achieving Intellectual and Personal Excellence</font>""", styles['Title'])
+    school_name = Paragraph("""<font size=30><b>MOTHER'S AID SCHOOLS</b></font><br/><font size=15>STUDENT'S OFFICIAL ACADEMIC REPORT</font><br/><font size=10>Achieving Intellectual and Personal Excellence</font>""", styles['Title'])
     header_table = Table([[logo, school_name]], colWidths=[80, 500])
     header_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
@@ -657,6 +655,66 @@ async def download_material(
         }
     )
 
+@router.get("/admin/reading-materials", response_model=List[dict])
+async def get_all_materials(
+    current_admin: Admin = Depends(get_current_admin),
+    db: Session = Depends(get_db)
+):
+    try:
+        materials = db.query(ReadingMaterial)\
+            .filter(ReadingMaterial.is_active == True)\
+            .order_by(ReadingMaterial.upload_date.desc())\
+            .all()
+        
+        return [
+            {
+                "id": material.id,
+                "title": material.title,
+                "description": material.description,
+                "subject": material.subject,
+                "class_assigned": material.class_assigned,
+                "term": material.term,
+                "session": material.session,
+                "file_name": material.file_name,
+                "file_type": material.file_type,
+                "upload_date": material.upload_date,
+            }
+            for material in materials
+        ]
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
+
+@router.delete("/admin/reading-materials/{material_id}")
+async def delete_material(
+    material_id: str,
+    current_admin: Admin = Depends(get_current_admin),
+    db: Session = Depends(get_db)
+):
+    material = db.query(ReadingMaterial).filter(
+        ReadingMaterial.id == material_id,
+        ReadingMaterial.is_active == True
+    ).first()
+    
+    if not material:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Material not found"
+        )
+    
+    try:
+        material.is_active = False  # Soft delete
+        db.commit()
+        return {"message": "Material deleted successfully"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
 @router.get("/admin/students-info", response_model=DashboardInfo)
 async def get_all_dashboard_info(
     current_admin: Admin = Depends(get_current_admin),
@@ -665,7 +723,6 @@ async def get_all_dashboard_info(
     try:
         # Get total counts using aggregation
         total_students = db.query(func.count(Student.admission_number)).scalar()
-        print(total_students)
         total_report_cards = db.query(func.count(ReportCard.id)).scalar()
         total_materials = db.query(func.count(ReadingMaterial.id)).scalar()
         total_news = db.query(func.count(News.id)).scalar()
@@ -908,6 +965,60 @@ async def update_student(
             detail=str(e)
         )
 
+class StudentPasswordUpdate(BaseModel):
+    new_password: str
+
+@router.put("/admin/students/{admission_number}/password")
+async def update_student_password(
+    admission_number: str,
+    password_update: StudentPasswordUpdate,
+    current_admin: Admin = Depends(get_current_admin),
+    db: Session = Depends(get_db)
+):
+    student = db.query(Student).filter(Student.admission_number == admission_number).first()
+    if not student:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Student not found"
+        )
+
+    try:
+        hashed_password = pwd_context.hash(password_update.new_password)
+        student.hashed_password = hashed_password
+
+        db.commit()
+        return {"message": "Student password updated successfully"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+@router.delete("/admin/students/{admission_number}")
+async def delete_student(
+    admission_number: str,
+    current_admin: Admin = Depends(get_current_admin),
+    db: Session = Depends(get_db)
+):
+    student = db.query(Student).filter(Student.admission_number == admission_number).first()
+    if not student:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Student not found"
+        )
+
+    try:
+        db.delete(student)
+        db.commit()
+        return {"message": "Student deleted successfully"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
 @router.get("/admin/all-admin", response_model=List[AdminResponse])
 async def get_all_admin(
     current_admin: Admin = Depends(get_current_admin),
@@ -920,5 +1031,76 @@ async def get_all_admin(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
+
+class AdminPasswordUpdate(BaseModel):
+    username: str
+    new_password: str
+
+@router.put("/admin/update-admin-password")
+async def update_admin_password(
+    password_update: AdminPasswordUpdate,
+    current_admin: Admin = Depends(get_current_admin),
+    db: Session = Depends(get_db)
+):
+    # Check if current admin has admin role
+    if current_admin.role != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only administrators can update admin passwords"
+        )
+    
+    # Find admin to update
+    admin = db.query(Admin).filter(Admin.username == password_update.username).first()
+    if not admin:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Admin not found"
+        )
+
+    try:
+        # Hash and update password
+        hashed_password = pwd_context.hash(password_update.new_password)
+        admin.hashed_password = hashed_password
+
+        db.commit()
+        return {"message": "Admin password updated successfully"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+@router.delete("/admin/delete-admin/{username}")
+async def delete_admin(
+    username: str,
+    current_admin: Admin = Depends(get_current_admin),
+    db: Session = Depends(get_db)
+):
+    # Check if admin exists
+    admin = db.query(Admin).filter(Admin.username == username).first()
+    if not admin:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Admin not found"
+        )
+    
+    # Prevent self-deletion
+    if admin.username == current_admin.username:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cannot delete your own account"
+        )
+
+    try:
+        db.delete(admin)
+        db.commit()
+        return {"message": "Admin deleted successfully"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
         )

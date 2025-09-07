@@ -20,7 +20,10 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Loader2, Search, Filter } from 'lucide-react';
+import { Loader2, Search, Filter, Trash2 } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -51,7 +54,12 @@ export default function StudentsPage() {
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [adminRole, setAdminRole] = useState<'admin' | 'teacher' | 'principal' | null>(null)
+  const [adminRole, setAdminRole] = useState<'admin' | 'teacher' | 'principal' | null>(null);
+  const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [newPassword, setNewPassword] = useState('');
+  const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
+
   const { toast } = useToast();
 
   useEffect(() => {
@@ -154,6 +162,72 @@ export default function StudentsPage() {
 
   const uniqueClasses = Array.from(new Set(students.map(student => student.current_class)));
 
+  const handleDeleteStudent = async (admissionNumber: string) => {
+    try {
+      const response = await fetch(`${API_URL}/admin/students/${admissionNumber}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        }
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.detail || 'Failed to delete student');
+      }
+
+      toast({
+        title: "Success",
+        description: "Student deleted successfully",
+      });
+
+      // Refresh student list
+      fetchStudents();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to delete student",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handlePasswordUpdate = async (admissionNumber: string, newPassword: string) => {
+    setIsUpdatingPassword(true);
+    try {
+      const response = await fetch(`${API_URL}/admin/students/${admissionNumber}/password`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
+        body: JSON.stringify({ new_password: newPassword })
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.detail || 'Failed to update password');
+      }
+
+      toast({
+        title: "Success",
+        description: "Student password updated successfully",
+      });
+
+      setIsPasswordDialogOpen(false);
+      setNewPassword('');
+      setSelectedStudent(null);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to update password",
+        variant: "destructive"
+      });
+    } finally {
+      setIsUpdatingPassword(false);
+    }
+  };
+
   return (
     <div className="p-6">
       <div className="max-w-7xl mx-auto">
@@ -225,10 +299,43 @@ export default function StudentsPage() {
                     <h3 className="font-semibold text-lg">{student.full_name}</h3>
                     <p className="text-sm text-gray-500">{student.admission_number}</p>
                   </div>
-                  <div className={`px-2 py-1 rounded text-sm ${
-                    student.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                  }`}>
-                    {student.is_active ? 'Active' : 'Inactive'}
+                  <div className="flex items-center gap-2">
+                    <div className={`px-2 py-1 rounded text-sm ${
+                      student.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    }`}>
+                      {student.is_active ? 'Active' : 'Inactive'}
+                    </div>
+                    {adminRole === 'admin' && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="text-red-500 hover:text-red-700"
+                          >
+                            <Trash2 className="h-5 w-5" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will permanently delete the
+                              student&apos;s record and all associated data.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              className="bg-red-500 hover:bg-red-700"
+                              onClick={() => handleDeleteStudent(student.admission_number)}
+                            >
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
                   </div>
                 </div>
 
@@ -239,16 +346,30 @@ export default function StudentsPage() {
                   <p className="text-sm"><span className="font-medium">Email:</span> {student.guardian_email}</p>
                 </div>
 
-                {adminRole === 'admin' && (<Button 
-                  variant="outline" 
-                  className="w-full"
-                  onClick={() => {
-                    setEditingStudent(student)
-                    setIsDialogOpen(true)
-                  }}
-                >
-                  Update Details
-                </Button>)}
+                {adminRole === 'admin' && (
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline" 
+                      className="flex-1"
+                      onClick={() => {
+                        setEditingStudent(student)
+                        setIsDialogOpen(true)
+                      }}
+                    >
+                      Update Details
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      className="flex-1"
+                      onClick={() => {
+                        setSelectedStudent(student);
+                        setIsPasswordDialogOpen(true);
+                      }}
+                    >
+                      Change Password
+                    </Button>
+                  </div>
+                )}
               </Card>
             ))}
           </div>
@@ -351,6 +472,59 @@ export default function StudentsPage() {
                 </div>
               </form>
             )}
+          </DialogContent>
+        </Dialog>
+
+        {/* Password Reset Dialog */}
+        <Dialog open={isPasswordDialogOpen} onOpenChange={setIsPasswordDialogOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Update Student Password</DialogTitle>
+              <DialogDescription>
+                Set a new password for {selectedStudent?.full_name}
+              </DialogDescription>
+            </DialogHeader>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              if (selectedStudent) {
+                handlePasswordUpdate(selectedStudent.admission_number, newPassword);
+              }
+            }} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="new-password">New Password</Label>
+                <Input
+                  id="new-password"
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Enter new password"
+                  required
+                />
+              </div>
+              <div className="flex justify-end gap-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setIsPasswordDialogOpen(false);
+                    setNewPassword('');
+                    setSelectedStudent(null);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isUpdatingPassword}>
+                  {isUpdatingPassword ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      Updating...
+                    </>
+                  ) : (
+                    'Update Password'
+                  )}
+                </Button>
+              </div>
+            </form>
           </DialogContent>
         </Dialog>
       </div>
