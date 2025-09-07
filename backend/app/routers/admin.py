@@ -936,7 +936,13 @@ async def get_all_students(
 @router.put("/admin/students/{admission_number}", response_model=StudentResponse)
 async def update_student(
     admission_number: str,
-    student_update: StudentUpdate,
+    full_name: str = Form(...),
+    current_class: str = Form(...),
+    guardian_name: str = Form(...),
+    guardian_phone: str = Form(...),
+    guardian_email: str = Form(...),
+    is_active: bool = Form(...),
+    profile_image: UploadFile = File(None),
     current_admin: Admin = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
@@ -949,10 +955,25 @@ async def update_student(
         )
 
     try:
-        # Update student fields if provided
-        update_data = student_update.model_dump(exclude_unset=True)
-        for field, value in update_data.items():
-            setattr(student, field, value)
+        student.full_name = full_name
+        student.current_class = current_class
+        student.guardian_name = guardian_name
+        student.guardian_phone = guardian_phone
+        student.guardian_email = guardian_email
+        student.is_active = is_active
+
+        # Handle profile image if provided
+        if profile_image:
+            allowed_types = ['image/jpeg', 'image/png', 'image/gif']
+            if profile_image.content_type not in allowed_types:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Invalid image format. Please upload JPEG, PNG or GIF"
+                )
+            
+            image_content = await profile_image.read()
+            student.profile_image = image_content
+            student.image_type = profile_image.content_type
 
         db.commit()
         db.refresh(student)
@@ -964,6 +985,20 @@ async def update_student(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
         )
+
+@router.get("/admin/students/{admission_number}/image")
+async def get_student_image(
+    admission_number: str,
+    db: Session = Depends(get_db)
+):
+    student = db.query(Student).filter(Student.admission_number == admission_number).first()
+    if not student or not student.profile_image:
+        raise HTTPException(status_code=404, detail="Image not found")
+    
+    return StreamingResponse(
+        BytesIO(student.profile_image),
+        media_type=student.image_type
+    )
 
 class StudentPasswordUpdate(BaseModel):
     new_password: str

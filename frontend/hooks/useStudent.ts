@@ -11,6 +11,7 @@ interface StudentData {
   guardian_email: string;
   guardian_phone: string;
 	profile_image: string;
+  image_type?: string;
   report_cards: ReportCard[];
 }
 

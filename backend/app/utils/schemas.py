@@ -63,6 +63,7 @@ class StudentProfile(BaseModel):
     state_of_origin: str
     local_government: str
     report_cards: List[ReportCardResponse] = []
+    image_type: Optional[str] = None
 
     class Config:
         from_attributes = True
@@ -111,6 +112,7 @@ class StudentResponse(BaseModel):
     date_admitted: date
     state_of_origin: str
     local_government: str
+    image_type: Optional[str] = None
 
     class Config:
         from_attributes = True

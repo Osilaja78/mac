@@ -23,6 +23,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 
 export default function PortalDashboardPage() {
 
@@ -108,9 +110,6 @@ export default function PortalDashboardPage() {
                 </CardContent>
               </Card>
             </motion.div>
-
-            {/* Add more stats cards */}
-            {/* ...existing stats cards code... */}
           </div>
 
           {/* Recent Report Cards */}
@@ -162,16 +161,26 @@ export default function PortalDashboardPage() {
             transition={{ duration: 0.5 }}
           >
             <Card className="border-none shadow-lg overflow-hidden">
-              <div className="relative h-[500px] bg-gradient-to-r from-primary to-primary/80">
-                <div className="absolute -bottom-12 left-1/2 -translate-x-1/2">
-                  <Image
-                    src={student?.profile_image || "/images/default-avatar.png"}
-                    alt="Student"
-                    fill
-                    className="object-cover"
+              {!student?.image_type ? (
+                <div className="relative h-[500px] bg-gradient-to-r from-primary to-primary/80">
+                  <div className="absolute -bottom-12 left-1/2 -translate-x-1/2">
+                    <img
+                      src={"/images/default-avatar.png"}
+                      alt="Student Avatar"
+                      className="object-cover"
+                    />
+                  </div>
+                </div>  
+              ) : (
+                <div className="relative h-[500px] rounded-sm border-4 overflow-hidden">
+                  <img
+                    src={`${API_URL}/admin/students/${student?.admission_number}/image`}
+                    alt={student?.full_name}
+                    className="w-full h-full object-cover"
                   />
                 </div>
-              </div>
+              )}
+
             </Card>
           </motion.div>
 

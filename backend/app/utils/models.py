@@ -22,6 +22,8 @@ class Student(Base):
     date_admitted = Column(Date)
     hashed_password = Column(String)
     profile_image_url = Column(String, nullable=True)
+    profile_image = Column(LargeBinary, nullable=True)
+    image_type = Column(String, nullable=True)
     state_of_origin = Column(String)
     local_government = Column(String)
 

@@ -20,7 +20,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Loader2, Search, Filter, Trash2 } from 'lucide-react';
+import { Loader2, Search, Filter, Trash2, User } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
@@ -40,6 +40,8 @@ interface Student {
   date_admitted: string;
   state_of_origin: string;
   local_government: string;
+  profile_image?: any;
+  image_type?: string;
 }
 
 export default function StudentsPage() {
@@ -59,6 +61,7 @@ export default function StudentsPage() {
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [newPassword, setNewPassword] = useState('');
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const { toast } = useToast();
 
@@ -127,14 +130,25 @@ export default function StudentsPage() {
   const handleUpdateStudent = async (studentData: Student) => {
     setIsSubmitting(true);
     try {
+      const formData = new FormData();
+      formData.append('full_name', studentData.full_name);
+      formData.append('current_class', studentData.current_class);
+      formData.append('guardian_name', studentData.guardian_name);
+      formData.append('guardian_phone', studentData.guardian_phone);
+      formData.append('guardian_email', studentData.guardian_email);
+      formData.append('is_active', studentData.is_active.toString());
+      
+      if (studentData.profile_image instanceof File) {
+        formData.append('profile_image', studentData.profile_image);
+      }
+
       const response = await fetch(`${API_URL}/admin/students/${studentData.admission_number}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         },
-        body: JSON.stringify(studentData)
-      })
+        body: formData
+      });
 
       if (!response.ok) {
         throw new Error('Failed to update student');
@@ -145,7 +159,6 @@ export default function StudentsPage() {
         description: "Student updated successfully",
       });
 
-      // Refresh student list
       fetchStudents();
       setIsDialogOpen(false);
       setEditingStudent(null);
@@ -158,7 +171,7 @@ export default function StudentsPage() {
     } finally {
       setIsSubmitting(false);
     }
-  }
+  };
 
   const uniqueClasses = Array.from(new Set(students.map(student => student.current_class)));
 
@@ -295,9 +308,22 @@ export default function StudentsPage() {
             {filteredStudents.map((student) => (
               <Card key={student.admission_number} className="p-6 shadow-lg">
                 <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="font-semibold text-lg">{student.full_name}</h3>
-                    <p className="text-sm text-gray-500">{student.admission_number}</p>
+                  <div className="flex items-center gap-4">
+                    {student.image_type ? (
+                      <img
+                        src={`${API_URL}/admin/students/${student.admission_number}/image`}
+                        alt={student.full_name}
+                        className="w-16 h-16 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center">
+                        <User className="w-8 h-8 text-gray-400" />
+                      </div>
+                    )}
+                    <div>
+                      <h3 className="font-semibold text-lg">{student.full_name}</h3>
+                      <p className="text-sm text-gray-500">{student.admission_number}</p>
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className={`px-2 py-1 rounded text-sm ${
@@ -390,6 +416,43 @@ export default function StudentsPage() {
                 handleUpdateStudent(editingStudent)
               }} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
+                  {/* Image upload section */}
+                  <div className="col-span-2 flex items-center gap-4">
+                    <div className="relative w-24 h-24">
+                      {imagePreview ? (
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          className="w-full h-full rounded-full object-cover"
+                        />
+                      ) : editingStudent.profile_image ? (
+                        <img
+                          src={`${API_URL}/admin/students/${editingStudent.admission_number}/image`}
+                          alt={editingStudent.full_name}
+                          className="w-full h-full rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full rounded-full bg-gray-200 flex items-center justify-center">
+                          <User className="w-12 h-12 text-gray-400" />
+                        </div>
+                      )}
+                    </div>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          setImagePreview(URL.createObjectURL(file));
+                          setEditingStudent({
+                            ...editingStudent,
+                            profile_image: file
+                          });
+                        }
+                      }}
+                    />
+                  </div>
+
                   <Input
                     placeholder="Full Name"
                     value={editingStudent.full_name}
