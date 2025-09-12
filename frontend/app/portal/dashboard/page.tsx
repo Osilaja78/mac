@@ -105,8 +105,8 @@ export default function PortalDashboardPage() {
                   <Clock className="h-4 w-4 text-primary" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">Third Term</div>
-                  <p className="text-xs text-gray-500">2024/2025</p>
+                  <div className="text-2xl font-bold">First Term</div>
+                  <p className="text-xs text-gray-500">2025/2026</p>
                 </CardContent>
               </Card>
             </motion.div>
